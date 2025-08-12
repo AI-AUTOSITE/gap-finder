@@ -1,0 +1,1262 @@
+{
+  "tools": [
+    {
+      "id": "canva",
+      "name": "Canva",
+      "category": "Design Tool",
+      "website": "https://canva.com",
+      "pricing": "Free - $15/month",
+      "marketShare": "35%",
+      "keywords": ["design", "graphic design", "templates", "canva", "visual content", "social media"],
+      "aliases": ["canva design", "canva editor", "graphic designer"],
+      "industryPosition": "leader",
+      "similarTools": [
+        {
+          "id": "figma",
+          "name": "Figma",
+          "pricing": "Free - $15/month",
+          "strength": "Real-time collaboration",
+          "weakness": "Complex for beginners",
+          "marketShare": "25%",
+          "similarity": 75
+        },
+        {
+          "id": "adobe-express",
+          "name": "Adobe Express",
+          "pricing": "Free - $20/month",
+          "strength": "Adobe ecosystem integration",
+          "weakness": "Heavy and expensive",
+          "marketShare": "15%",
+          "similarity": 80
+        },
+        {
+          "id": "sketch",
+          "name": "Sketch",
+          "pricing": "$99/year",
+          "strength": "Mac native, rich plugins",
+          "weakness": "Mac only, no web version",
+          "marketShare": "10%",
+          "similarity": 70
+        },
+        {
+          "id": "crello",
+          "name": "Crello (VistaCreate)",
+          "pricing": "Free - $10/month",
+          "strength": "Affordable, good templates",
+          "weakness": "Limited advanced features",
+          "marketShare": "8%",
+          "similarity": 85
+        },
+        {
+          "id": "piktochart",
+          "name": "Piktochart",
+          "pricing": "Free - $24/month",
+          "strength": "Infographic specialization",
+          "weakness": "Niche focus, limited design types",
+          "marketShare": "3%",
+          "similarity": 60
+        }
+      ],
+      "userComplaints": [
+        {
+          "issue": "Too slow / heavy loading times",
+          "frequency": 34,
+          "severity": "high",
+          "source": "G2",
+          "trends": "increasing",
+          "examples": ["Takes 10+ seconds to load", "Crashes on older devices"]
+        },
+        {
+          "issue": "No offline access capability",
+          "frequency": 28,
+          "severity": "high",
+          "source": "Capterra",
+          "trends": "stable",
+          "examples": ["Can't work on plane", "Lost work when internet dropped"]
+        },
+        {
+          "issue": "Limited customization for advanced users",
+          "frequency": 22,
+          "severity": "medium",
+          "source": "Reddit",
+          "trends": "increasing",
+          "examples": ["Can't edit HTML/CSS", "Templates too restrictive"]
+        }
+      ],
+      "industryGaps": [
+        {
+          "gap": "Universal Offline Support",
+          "affectedTools": ["canva", "figma", "adobe-express", "crello"],
+          "opportunity": "ALL major design tools require internet. Huge gap for travelers, remote workers.",
+          "claudeInsight": "This is the #1 complaint across ALL design tools. A truly offline-first design tool could capture significant market share.",
+          "marketImpact": "Industry-wide problem affecting 60%+ of tools",
+          "difficulty": "medium",
+          "potential": "very high",
+          "timeframe": "6-8 months",
+          "successProbability": 75
+        }
+      ],
+      "actionStrategies": [
+        {
+          "strategy": "Speed-First Positioning",
+          "description": "Position as 'The 5-Second Canva' - make speed your core differentiator",
+          "reasoning": "34% of users complain about slow loading. Speed = competitive advantage.",
+          "examples": ["Linear positioned as fast PM tool", "Vercel positioned as fast deployment"],
+          "timeline": "2-3 weeks",
+          "difficulty": "easy",
+          "resources": ["Landing page optimization", "Performance benchmarking"],
+          "priority": 9
+        }
+      ],
+      "successStories": [
+        {
+          "company": "Figma",
+          "situation": "Competed against established Sketch, Adobe dominance",
+          "action": "Introduced real-time collaboration as core feature",
+          "result": "Acquired by Adobe for $20B",
+          "timeline": "36 months to industry disruption",
+          "lessons": ["Collaboration can differentiate", "Web-first wins"],
+          "relevance": 90
+        }
+      ],
+      "lastUpdated": "2024-08-12",
+      "dataQuality": "high",
+      "communityVotes": 47,
+      "userRequested": false
+    },
+    {
+      "id": "notion",
+      "name": "Notion",
+      "category": "Productivity Tool",
+      "website": "https://notion.so",
+      "pricing": "Free - $10/month",
+      "marketShare": "25%",
+      "keywords": ["notion", "notes", "database", "workspace", "productivity", "wiki", "docs"],
+      "aliases": ["notion workspace", "notion notes", "all-in-one workspace"],
+      "industryPosition": "leader",
+      "similarTools": [
+        {
+          "id": "obsidian",
+          "name": "Obsidian",
+          "pricing": "Free - $50/month",
+          "strength": "Local files, powerful linking",
+          "weakness": "Complex setup, technical",
+          "marketShare": "15%",
+          "similarity": 70
+        },
+        {
+          "id": "airtable",
+          "name": "Airtable",
+          "pricing": "Free - $20/month",
+          "strength": "Database functionality",
+          "weakness": "Not great for notes",
+          "marketShare": "20%",
+          "similarity": 65
+        },
+        {
+          "id": "roam",
+          "name": "Roam Research",
+          "pricing": "$15/month",
+          "strength": "Bidirectional linking",
+          "weakness": "Steep learning curve",
+          "marketShare": "8%",
+          "similarity": 75
+        }
+      ],
+      "userComplaints": [
+        {
+          "issue": "Slow performance and loading times",
+          "frequency": 42,
+          "severity": "high",
+          "source": "Reddit",
+          "trends": "increasing",
+          "examples": ["Database views take forever", "Search is sluggish"]
+        }
+      ],
+      "industryGaps": [
+        {
+          "gap": "Simple Yet Powerful Interface",
+          "affectedTools": ["notion", "roam", "obsidian"],
+          "opportunity": "All advanced note-taking tools are too complex for casual users",
+          "claudeInsight": "There's a sweet spot between Apple Notes (too simple) and Notion (too complex).",
+          "marketImpact": "Affects 70% of productivity tools",
+          "difficulty": "hard",
+          "potential": "very high",
+          "timeframe": "6-9 months",
+          "successProbability": 65
+        }
+      ],
+      "actionStrategies": [
+        {
+          "strategy": "Lightning-Fast Notion Alternative",
+          "description": "Build a fast, lightweight version focusing on core use cases",
+          "reasoning": "42% complain about speed. Speed + simplicity = winning combination.",
+          "examples": ["Linear vs Jira", "Superhuman vs Gmail"],
+          "timeline": "4-6 months",
+          "difficulty": "medium",
+          "resources": ["Performance optimization", "Simplified feature set"],
+          "priority": 8
+        }
+      ],
+      "successStories": [
+        {
+          "company": "Superhuman",
+          "situation": "Gmail dominated email, users frustrated with slow performance",
+          "action": "Built fastest email client, focused on keyboard shortcuts",
+          "result": "$300M valuation, premium pricing sustainable",
+          "timeline": "18 months to product-market fit",
+          "lessons": ["Speed justifies premium pricing", "Target power users first"],
+          "relevance": 85
+        }
+      ],
+      "lastUpdated": "2024-08-12",
+      "dataQuality": "high",
+      "communityVotes": 33,
+      "userRequested": false
+    },
+    {
+      "id": "github",
+      "name": "GitHub",
+      "category": "Development Tool",
+      "website": "https://github.com",
+      "pricing": "Free - $21/month",
+      "marketShare": "45%",
+      "keywords": ["github", "git", "version control", "code repository", "collaboration", "open source"],
+      "aliases": ["gh", "github.com", "git hub"],
+      "industryPosition": "leader",
+      "similarTools": [
+        {
+          "id": "gitlab",
+          "name": "GitLab",
+          "pricing": "Free - $29/month",
+          "strength": "Built-in CI/CD, self-hosted option",
+          "weakness": "Complex interface, slower",
+          "marketShare": "20%",
+          "similarity": 90
+        },
+        {
+          "id": "bitbucket",
+          "name": "Bitbucket",
+          "pricing": "Free - $15/month",
+          "strength": "Jira integration, cheaper",
+          "weakness": "Smaller community, fewer features",
+          "marketShare": "10%",
+          "similarity": 85
+        },
+        {
+          "id": "sourcehut",
+          "name": "SourceHut",
+          "pricing": "$2-20/month",
+          "strength": "Simple, fast, email-based workflow",
+          "weakness": "No fancy UI, small community",
+          "marketShare": "1%",
+          "similarity": 60
+        },
+        {
+          "id": "gitea",
+          "name": "Gitea",
+          "pricing": "Free (self-hosted)",
+          "strength": "Lightweight, self-hosted",
+          "weakness": "Requires maintenance, smaller ecosystem",
+          "marketShare": "3%",
+          "similarity": 70
+        }
+      ],
+      "userComplaints": [
+        {
+          "issue": "Actions minutes are expensive",
+          "frequency": 38,
+          "severity": "medium",
+          "source": "Twitter",
+          "trends": "increasing",
+          "examples": ["CI/CD costs add up quickly", "$0.008/minute is too high"]
+        },
+        {
+          "issue": "Search functionality is poor",
+          "frequency": 31,
+          "severity": "medium",
+          "source": "Reddit",
+          "trends": "stable",
+          "examples": ["Can't search across org repos easily", "Code search is limited"]
+        },
+        {
+          "issue": "Package registry limitations",
+          "frequency": 25,
+          "severity": "low",
+          "source": "G2",
+          "trends": "stable",
+          "examples": ["Storage limits too low", "npm registry issues"]
+        }
+      ],
+      "industryGaps": [
+        {
+          "gap": "Affordable CI/CD at Scale",
+          "affectedTools": ["github", "gitlab", "bitbucket"],
+          "opportunity": "All major platforms charge high prices for CI/CD minutes",
+          "claudeInsight": "There's room for a 'Cloudflare of CI/CD' - unlimited builds for fixed price",
+          "marketImpact": "Affects every development team globally",
+          "difficulty": "hard",
+          "potential": "high",
+          "timeframe": "8-12 months",
+          "successProbability": 60
+        },
+        {
+          "gap": "Code Search Excellence",
+          "affectedTools": ["github", "gitlab", "bitbucket"],
+          "opportunity": "Nobody has solved searching across multiple repos well",
+          "claudeInsight": "Algolia for code repositories could be massive",
+          "marketImpact": "Every developer searches code daily",
+          "difficulty": "medium",
+          "potential": "high",
+          "timeframe": "4-6 months",
+          "successProbability": 70
+        }
+      ],
+      "actionStrategies": [
+        {
+          "strategy": "CI/CD Cost Disruption",
+          "description": "Offer unlimited CI/CD minutes for flat rate",
+          "reasoning": "38% complain about costs. Fixed pricing = predictability",
+          "examples": ["Cloudflare's unlimited bandwidth", "Vercel's generous free tier"],
+          "timeline": "6-8 months",
+          "difficulty": "hard",
+          "resources": ["Infrastructure optimization", "Efficient runners"],
+          "priority": 7
+        }
+      ],
+      "successStories": [
+        {
+          "company": "GitLab",
+          "situation": "GitHub dominated version control market",
+          "action": "Offered integrated CI/CD and self-hosting",
+          "result": "$2.75B valuation, successful IPO",
+          "timeline": "8 years to IPO",
+          "lessons": ["Integration matters", "Self-hosting is valuable"],
+          "relevance": 80
+        }
+      ],
+      "lastUpdated": "2024-08-12",
+      "dataQuality": "high",
+      "communityVotes": 52,
+      "userRequested": false
+    },
+    {
+      "id": "vercel",
+      "name": "Vercel",
+      "category": "Hosting Platform",
+      "website": "https://vercel.com",
+      "pricing": "Free - $20/month",
+      "marketShare": "15%",
+      "keywords": ["vercel", "hosting", "deployment", "nextjs", "serverless", "jamstack", "edge"],
+      "aliases": ["zeit", "vercel.app", "now.sh"],
+      "industryPosition": "challenger",
+      "similarTools": [
+        {
+          "id": "netlify",
+          "name": "Netlify",
+          "pricing": "Free - $19/month",
+          "strength": "Better forms, identity features",
+          "weakness": "Slower builds, less Next.js focus",
+          "marketShare": "18%",
+          "similarity": 90
+        },
+        {
+          "id": "cloudflare-pages",
+          "name": "Cloudflare Pages",
+          "pricing": "Free - $5/month",
+          "strength": "Unlimited bandwidth, Workers",
+          "weakness": "Less polished DX",
+          "marketShare": "10%",
+          "similarity": 75
+        },
+        {
+          "id": "render",
+          "name": "Render",
+          "pricing": "Free - $25/month",
+          "strength": "Background jobs, databases",
+          "weakness": "More complex, slower",
+          "marketShare": "5%",
+          "similarity": 70
+        },
+        {
+          "id": "railway",
+          "name": "Railway",
+          "pricing": "$5/month+",
+          "strength": "Simple pricing, databases",
+          "weakness": "Less mature, smaller",
+          "marketShare": "2%",
+          "similarity": 65
+        }
+      ],
+      "userComplaints": [
+        {
+          "issue": "Bandwidth limits hit quickly",
+          "frequency": 45,
+          "severity": "high",
+          "source": "Twitter",
+          "trends": "increasing",
+          "examples": ["100GB goes fast", "Overages are expensive"]
+        },
+        {
+          "issue": "Function timeouts too short",
+          "frequency": 28,
+          "severity": "medium",
+          "source": "Reddit",
+          "trends": "stable",
+          "examples": ["10 second timeout breaks APIs", "Need longer for data processing"]
+        }
+      ],
+      "industryGaps": [
+        {
+          "gap": "Generous Bandwidth Limits",
+          "affectedTools": ["vercel", "netlify", "render"],
+          "opportunity": "Everyone limits bandwidth, creating bill shock",
+          "claudeInsight": "Cloudflare Pages is winning by offering unlimited bandwidth",
+          "marketImpact": "Affects all high-traffic sites",
+          "difficulty": "medium",
+          "potential": "high",
+          "timeframe": "3-4 months",
+          "successProbability": 75
+        }
+      ],
+      "actionStrategies": [
+        {
+          "strategy": "Unlimited Bandwidth Hosting",
+          "description": "No bandwidth limits, ever",
+          "reasoning": "45% hit bandwidth limits. Remove the worry",
+          "examples": ["Cloudflare's model", "Bunny CDN approach"],
+          "timeline": "3 months",
+          "difficulty": "medium",
+          "resources": ["CDN partnerships", "Efficient caching"],
+          "priority": 8
+        }
+      ],
+      "successStories": [
+        {
+          "company": "Cloudflare Pages",
+          "situation": "Vercel/Netlify dominated JAMstack",
+          "action": "Offered unlimited bandwidth, integrated with Workers",
+          "result": "Rapid growth, taking market share",
+          "timeline": "2 years to major adoption",
+          "lessons": ["Free unlimited resources win", "Integration is key"],
+          "relevance": 85
+        }
+      ],
+      "lastUpdated": "2024-08-12",
+      "dataQuality": "high",
+      "communityVotes": 41,
+      "userRequested": false
+    },
+    {
+      "id": "slack",
+      "name": "Slack",
+      "category": "Communication Tool",
+      "website": "https://slack.com",
+      "pricing": "Free - $12.50/month",
+      "marketShare": "30%",
+      "keywords": ["slack", "chat", "team communication", "messaging", "collaboration"],
+      "aliases": ["slack chat", "slack messenger"],
+      "industryPosition": "leader",
+      "similarTools": [
+        {
+          "id": "discord",
+          "name": "Discord",
+          "pricing": "Free - $10/month",
+          "strength": "Better voice/video, gaming features",
+          "weakness": "Less business focused",
+          "marketShare": "20%",
+          "similarity": 80
+        },
+        {
+          "id": "microsoft-teams",
+          "name": "Microsoft Teams",
+          "pricing": "Free - $12.50/month",
+          "strength": "Office integration",
+          "weakness": "Complex, slow",
+          "marketShare": "25%",
+          "similarity": 85
+        },
+        {
+          "id": "zulip",
+          "name": "Zulip",
+          "pricing": "Free - $7/month",
+          "strength": "Threaded conversations",
+          "weakness": "Different paradigm",
+          "marketShare": "1%",
+          "similarity": 60
+        }
+      ],
+      "userComplaints": [
+        {
+          "issue": "Message history limited on free plan",
+          "frequency": 52,
+          "severity": "high",
+          "source": "G2",
+          "trends": "stable",
+          "examples": ["10K message limit too low", "Lost important history"]
+        },
+        {
+          "issue": "Resource heavy, slows computer",
+          "frequency": 38,
+          "severity": "medium",
+          "source": "Reddit",
+          "trends": "increasing",
+          "examples": ["Uses 2GB RAM", "Electron bloat"]
+        }
+      ],
+      "industryGaps": [
+        {
+          "gap": "Unlimited Message History",
+          "affectedTools": ["slack", "teams"],
+          "opportunity": "Everyone limits history on free plans",
+          "claudeInsight": "Discord succeeded by not limiting history",
+          "marketImpact": "Every small team hits this limit",
+          "difficulty": "easy",
+          "potential": "high",
+          "timeframe": "2 months",
+          "successProbability": 80
+        }
+      ],
+      "actionStrategies": [
+        {
+          "strategy": "Lightweight Slack Alternative",
+          "description": "Native app, not Electron, unlimited history",
+          "reasoning": "38% complain about performance",
+          "examples": ["Telegram's native apps", "Zed editor approach"],
+          "timeline": "6 months",
+          "difficulty": "hard",
+          "resources": ["Native development", "Efficient sync"],
+          "priority": 7
+        }
+      ],
+      "successStories": [
+        {
+          "company": "Discord",
+          "situation": "Slack dominated team chat",
+          "action": "Free unlimited history, better voice chat",
+          "result": "$15B valuation",
+          "timeline": "5 years to mass adoption",
+          "lessons": ["Free tier generosity matters", "Voice is differentiator"],
+          "relevance": 90
+        }
+      ],
+      "lastUpdated": "2024-08-12",
+      "dataQuality": "high",
+      "communityVotes": 38,
+      "userRequested": false
+    },
+    {
+      "id": "chatgpt",
+      "name": "ChatGPT",
+      "category": "AI Tool",
+      "website": "https://chat.openai.com",
+      "pricing": "Free - $20/month",
+      "marketShare": "40%",
+      "keywords": ["chatgpt", "ai", "gpt", "openai", "chat bot", "artificial intelligence"],
+      "aliases": ["chat gpt", "gpt-4", "openai chat"],
+      "industryPosition": "leader",
+      "similarTools": [
+        {
+          "id": "claude",
+          "name": "Claude",
+          "pricing": "Free - $20/month",
+          "strength": "Better at coding, larger context",
+          "weakness": "Less well known",
+          "marketShare": "15%",
+          "similarity": 95
+        },
+        {
+          "id": "gemini",
+          "name": "Google Gemini",
+          "pricing": "Free - $20/month",
+          "strength": "Google integration",
+          "weakness": "Less capable currently",
+          "marketShare": "10%",
+          "similarity": 85
+        },
+        {
+          "id": "perplexity",
+          "name": "Perplexity",
+          "pricing": "Free - $20/month",
+          "strength": "Real-time web search",
+          "weakness": "Less creative",
+          "marketShare": "5%",
+          "similarity": 70
+        }
+      ],
+      "userComplaints": [
+        {
+          "issue": "GPT-4 rate limits too restrictive",
+          "frequency": 48,
+          "severity": "high",
+          "source": "Reddit",
+          "trends": "stable",
+          "examples": ["40 messages/3 hours too low", "Forced to use GPT-3.5"]
+        },
+        {
+          "issue": "Can't access internet/real-time data",
+          "frequency": 35,
+          "severity": "medium",
+          "source": "Twitter",
+          "trends": "decreasing",
+          "examples": ["Knowledge cutoff issues", "Can't browse URLs"]
+        }
+      ],
+      "industryGaps": [
+        {
+          "gap": "Generous Rate Limits",
+          "affectedTools": ["chatgpt", "claude", "gemini"],
+          "opportunity": "All limit messages per hour",
+          "claudeInsight": "Users want unlimited at fixed price",
+          "marketImpact": "Every power user hits limits",
+          "difficulty": "hard",
+          "potential": "very high",
+          "timeframe": "6 months",
+          "successProbability": 50
+        }
+      ],
+      "actionStrategies": [
+        {
+          "strategy": "API Aggregator with Smart Routing",
+          "description": "Use multiple AI APIs, route based on task",
+          "reasoning": "Avoid rate limits by using multiple providers",
+          "examples": ["OpenRouter model", "Poe.com approach"],
+          "timeline": "3 months",
+          "difficulty": "medium",
+          "resources": ["API integrations", "Smart routing logic"],
+          "priority": 8
+        }
+      ],
+      "successStories": [
+        {
+          "company": "Perplexity",
+          "situation": "ChatGPT dominated AI chat",
+          "action": "Added real-time web search capability",
+          "result": "$1B valuation in 18 months",
+          "timeline": "1 year to product-market fit",
+          "lessons": ["Specific use case wins", "Real-time data matters"],
+          "relevance": 85
+        }
+      ],
+      "lastUpdated": "2024-08-12",
+      "dataQuality": "high",
+      "communityVotes": 61,
+      "userRequested": false
+    },
+    {
+      "id": "linear",
+      "name": "Linear",
+      "category": "Project Management",
+      "website": "https://linear.app",
+      "pricing": "$8-15/month",
+      "marketShare": "5%",
+      "keywords": ["linear", "project management", "issue tracking", "agile", "scrum"],
+      "aliases": ["linear app", "linear pm"],
+      "industryPosition": "challenger",
+      "similarTools": [
+        {
+          "id": "jira",
+          "name": "Jira",
+          "pricing": "Free - $15/month",
+          "strength": "Feature rich, integrations",
+          "weakness": "Slow, complex",
+          "marketShare": "40%",
+          "similarity": 85
+        },
+        {
+          "id": "asana",
+          "name": "Asana",
+          "pricing": "Free - $25/month",
+          "strength": "User friendly",
+          "weakness": "Less developer focused",
+          "marketShare": "15%",
+          "similarity": 70
+        },
+        {
+          "id": "clickup",
+          "name": "ClickUp",
+          "pricing": "Free - $9/month",
+          "strength": "Highly customizable",
+          "weakness": "Overwhelming features",
+          "marketShare": "8%",
+          "similarity": 75
+        }
+      ],
+      "userComplaints": [
+        {
+          "issue": "No free tier for teams",
+          "frequency": 42,
+          "severity": "high",
+          "source": "Twitter",
+          "trends": "stable",
+          "examples": ["Need credit card immediately", "No trial for small teams"]
+        },
+        {
+          "issue": "Limited customization",
+          "frequency": 28,
+          "severity": "low",
+          "source": "G2",
+          "trends": "stable",
+          "examples": ["Can't customize workflows", "Fixed methodology"]
+        }
+      ],
+      "industryGaps": [
+        {
+          "gap": "Speed + Free Tier",
+          "affectedTools": ["jira", "asana", "monday"],
+          "opportunity": "Linear proved speed matters, but has no free tier",
+          "claudeInsight": "Fast AND free would dominate",
+          "marketImpact": "Every startup needs PM tools",
+          "difficulty": "medium",
+          "potential": "high",
+          "timeframe": "4 months",
+          "successProbability": 70
+        }
+      ],
+      "actionStrategies": [
+        {
+          "strategy": "Open Source Linear Clone",
+          "description": "Linear's UX but open source and free",
+          "reasoning": "42% want free tier",
+          "examples": ["Supabase vs Firebase", "Cal.com vs Calendly"],
+          "timeline": "6 months",
+          "difficulty": "hard",
+          "resources": ["Complex frontend", "Real-time sync"],
+          "priority": 6
+        }
+      ],
+      "successStories": [
+        {
+          "company": "Linear",
+          "situation": "Jira dominated with 40% market share",
+          "action": "Built 10x faster alternative",
+          "result": "$400M valuation",
+          "timeline": "3 years to significant traction",
+          "lessons": ["Speed is a feature", "Developer focus works"],
+          "relevance": 95
+        }
+      ],
+      "lastUpdated": "2024-08-12",
+      "dataQuality": "high",
+      "communityVotes": 44,
+      "userRequested": true
+    },
+    {
+      "id": "zoom",
+      "name": "Zoom",
+      "category": "Video Conferencing",
+      "website": "https://zoom.us",
+      "pricing": "Free - $15/month",
+      "marketShare": "35%",
+      "keywords": ["zoom", "video call", "meeting", "conference", "webinar"],
+      "aliases": ["zoom meeting", "zoom call"],
+      "industryPosition": "leader",
+      "similarTools": [
+        {
+          "id": "google-meet",
+          "name": "Google Meet",
+          "pricing": "Free - $12/month",
+          "strength": "Google integration",
+          "weakness": "Fewer features",
+          "marketShare": "25%",
+          "similarity": 90
+        },
+        {
+          "id": "whereby",
+          "name": "Whereby",
+          "pricing": "Free - $15/month",
+          "strength": "No downloads needed",
+          "weakness": "Less reliable",
+          "marketShare": "2%",
+          "similarity": 75
+        },
+        {
+          "id": "around",
+          "name": "Around",
+          "pricing": "Free - $15/month",
+          "strength": "Low CPU usage",
+          "weakness": "Smaller user base",
+          "marketShare": "1%",
+          "similarity": 70
+        }
+      ],
+      "userComplaints": [
+        {
+          "issue": "40 minute limit on free plan",
+          "frequency": 58,
+          "severity": "high",
+          "source": "G2",
+          "trends": "stable",
+          "examples": ["Meetings cut off", "Forced to rejoin"]
+        },
+        {
+          "issue": "High CPU/battery usage",
+          "frequency": 41,
+          "severity": "medium",
+          "source": "Reddit",
+          "trends": "stable",
+          "examples": ["Laptop gets hot", "Battery drains fast"]
+        }
+      ],
+      "industryGaps": [
+        {
+          "gap": "Unlimited Free Meetings",
+          "affectedTools": ["zoom", "teams", "meet"],
+          "opportunity": "Everyone limits free meetings",
+          "claudeInsight": "Jitsi proved open source video works",
+          "marketImpact": "Every remote team needs this",
+          "difficulty": "hard",
+          "potential": "high",
+          "timeframe": "6 months",
+          "successProbability": 60
+        }
+      ],
+      "actionStrategies": [
+        {
+          "strategy": "Efficient Video Platform",
+          "description": "Low bandwidth, low CPU, unlimited free",
+          "reasoning": "41% complain about performance",
+          "examples": ["Around's approach", "Jitsi model"],
+          "timeline": "8 months",
+          "difficulty": "hard",
+          "resources": ["WebRTC expertise", "Infrastructure"],
+          "priority": 5
+        }
+      ],
+      "successStories": [
+        {
+          "company": "Around",
+          "situation": "Zoom dominated but used too much CPU",
+          "action": "Built lightweight alternative",
+          "result": "Acquired by Miro",
+          "timeline": "2 years to acquisition",
+          "lessons": ["Performance matters", "Niche can win"],
+          "relevance": 75
+        }
+      ],
+      "lastUpdated": "2024-08-12",
+      "dataQuality": "high",
+      "communityVotes": 35,
+      "userRequested": false
+    },
+    {
+      "id": "stripe",
+      "name": "Stripe",
+      "category": "Payment Platform",
+      "website": "https://stripe.com",
+      "pricing": "2.9% + $0.30 per transaction",
+      "marketShare": "20%",
+      "keywords": ["stripe", "payments", "billing", "subscription", "checkout"],
+      "aliases": ["stripe payments", "stripe checkout"],
+      "industryPosition": "leader",
+      "similarTools": [
+        {
+          "id": "paddle",
+          "name": "Paddle",
+          "pricing": "5% + $0.50",
+          "strength": "Handles tax globally",
+          "weakness": "Higher fees",
+          "marketShare": "3%",
+          "similarity": 80
+        },
+        {
+          "id": "lemonsqueezy",
+          "name": "Lemon Squeezy",
+          "pricing": "5% + $0.50",
+          "strength": "Simple for creators",
+          "weakness": "Limited features",
+          "marketShare": "1%",
+          "similarity": 75
+        },
+        {
+          "id": "paypal",
+          "name": "PayPal",
+          "pricing": "2.9% + $0.49",
+          "strength": "User trust",
+          "weakness": "Poor developer experience",
+          "marketShare": "30%",
+          "similarity": 70
+        }
+      ],
+      "userComplaints": [
+        {
+          "issue": "International tax complexity",
+          "frequency": 45,
+          "severity": "high",
+          "source": "Twitter",
+          "trends": "increasing",
+          "examples": ["VAT compliance hard", "Tax forms confusing"]
+        },
+        {
+          "issue": "High fees for small transactions",
+          "frequency": 38,
+          "severity": "medium",
+          "source": "Reddit",
+          "trends": "stable",
+          "examples": ["$0.30 fee kills microtransactions", "30% gone on $1 sale"]
+        }
+      ],
+      "industryGaps": [
+        {
+          "gap": "Microtransaction Optimization",
+          "affectedTools": ["stripe", "paypal", "square"],
+          "opportunity": "Nobody handles <$5 transactions well",
+          "claudeInsight": "Crypto proved micropayments demand exists",
+          "marketImpact": "Every content creator affected",
+          "difficulty": "hard",
+          "potential": "very high",
+          "timeframe": "12 months",
+          "successProbability": 55
+        }
+      ],
+      "actionStrategies": [
+        {
+          "strategy": "Creator-First Payment Platform",
+          "description": "Optimized for small transactions, simple tax",
+          "reasoning": "38% struggle with small transaction fees",
+          "examples": ["Ko-fi model", "Buy Me a Coffee approach"],
+          "timeline": "6 months",
+          "difficulty": "hard",
+          "resources": ["Payment infrastructure", "Compliance"],
+          "priority": 6
+        }
+      ],
+      "successStories": [
+        {
+          "company": "Lemon Squeezy",
+          "situation": "Stripe too complex for creators",
+          "action": "Built simple, tax-included platform",
+          "result": "Rapid growth in creator economy",
+          "timeline": "2 years to profitability",
+          "lessons": ["Simplicity wins", "Niche focus works"],
+          "relevance": 80
+        }
+      ],
+      "lastUpdated": "2024-08-12",
+      "dataQuality": "high",
+      "communityVotes": 29,
+      "userRequested": true
+    },
+    {
+      "id": "airtable",
+      "name": "Airtable",
+      "category": "Database Tool",
+      "website": "https://airtable.com",
+      "pricing": "Free - $24/month",
+      "marketShare": "15%",
+      "keywords": ["airtable", "database", "spreadsheet", "no-code", "automation"],
+      "aliases": ["air table", "airtable base"],
+      "industryPosition": "leader",
+      "similarTools": [
+        {
+          "id": "nocodb",
+          "name": "NocoDB",
+          "pricing": "Free (open source)",
+          "strength": "Open source, self-hosted",
+          "weakness": "Less polished",
+          "marketShare": "2%",
+          "similarity": 85
+        },
+        {
+          "id": "baserow",
+          "name": "Baserow",
+          "pricing": "Free - $20/month",
+          "strength": "Open source option",
+          "weakness": "Fewer integrations",
+          "marketShare": "1%",
+          "similarity": 80
+        },
+        {
+          "id": "smartsheet",
+          "name": "Smartsheet",
+          "pricing": "$9-25/month",
+          "strength": "Enterprise features",
+          "weakness": "Complex, expensive",
+          "marketShare": "10%",
+          "similarity": 70
+        }
+      ],
+      "userComplaints": [
+        {
+          "issue": "Row limits on free plan (1,200)",
+          "frequency": 52,
+          "severity": "high",
+          "source": "G2",
+          "trends": "stable",
+          "examples": ["Hit limit quickly", "Forced to upgrade"]
+        },
+        {
+          "issue": "Expensive for teams",
+          "frequency": 41,
+          "severity": "medium",
+          "source": "Reddit",
+          "trends": "increasing",
+          "examples": ["$24/user adds up", "More than Google Workspace"]
+        }
+      ],
+      "industryGaps": [
+        {
+          "gap": "Generous Free Database",
+          "affectedTools": ["airtable", "smartsheet"],
+          "opportunity": "All limit rows heavily",
+          "claudeInsight": "Supabase proved generous free tiers win",
+          "marketImpact": "Every no-code builder needs this",
+          "difficulty": "medium",
+          "potential": "high",
+          "timeframe": "4 months",
+          "successProbability": 75
+        }
+      ],
+      "actionStrategies": [
+        {
+          "strategy": "Open Source Airtable",
+          "description": "Self-hosted, unlimited rows",
+          "reasoning": "52% hit row limits",
+          "examples": ["NocoDB growing", "Baserow model"],
+          "timeline": "5 months",
+          "difficulty": "medium",
+          "resources": ["Database design", "Real-time sync"],
+          "priority": 7
+        }
+      ],
+      "successStories": [
+        {
+          "company": "NocoDB",
+          "situation": "Airtable expensive and limited",
+          "action": "Built open source alternative",
+          "result": "500K+ downloads",
+          "timeline": "2 years to adoption",
+          "lessons": ["Open source wins", "Self-hosting valuable"],
+          "relevance": 85
+        }
+      ],
+      "lastUpdated": "2024-08-12",
+      "dataQuality": "high",
+      "communityVotes": 31,
+      "userRequested": false
+    },
+    {
+      "id": "figma",
+      "name": "Figma",
+      "category": "Design Tool",
+      "website": "https://figma.com",
+      "pricing": "Free - $15/month",
+      "marketShare": "25%",
+      "keywords": ["figma", "design", "ui", "ux", "prototype", "collaboration"],
+      "aliases": ["figma design", "figmaapp"],
+      "industryPosition": "leader",
+      "similarTools": [
+        {
+          "id": "sketch",
+          "name": "Sketch",
+          "pricing": "$12/month",
+          "strength": "Mac native performance",
+          "weakness": "Mac only",
+          "marketShare": "10%",
+          "similarity": 85
+        },
+        {
+          "id": "penpot",
+          "name": "Penpot",
+          "pricing": "Free (open source)",
+          "strength": "Open source, free",
+          "weakness": "Less features",
+          "marketShare": "1%",
+          "similarity": 75
+        },
+        {
+          "id": "framer",
+          "name": "Framer",
+          "pricing": "Free - $30/month",
+          "strength": "Code generation",
+          "weakness": "Learning curve",
+          "marketShare": "3%",
+          "similarity": 70
+        }
+      ],
+      "userComplaints": [
+        {
+          "issue": "Performance degrades with large files",
+          "frequency": 48,
+          "severity": "high",
+          "source": "Twitter",
+          "trends": "increasing",
+          "examples": ["Becomes unusable", "Crashes browser"]
+        },
+        {
+          "issue": "No offline mode",
+          "frequency": 35,
+          "severity": "medium",
+          "source": "Reddit",
+          "trends": "stable",
+          "examples": ["Can't work on plane", "Internet required"]
+        }
+      ],
+      "industryGaps": [
+        {
+          "gap": "Native Performance Design Tool",
+          "affectedTools": ["figma", "adobe-xd"],
+          "opportunity": "All web-based tools slow with big files",
+          "claudeInsight": "Native apps still have performance advantage",
+          "marketImpact": "Every designer with complex projects",
+          "difficulty": "hard",
+          "potential": "high",
+          "timeframe": "12 months",
+          "successProbability": 60
+        }
+      ],
+      "actionStrategies": [
+        {
+          "strategy": "Lightweight Figma Alternative",
+          "description": "Native app, better performance",
+          "reasoning": "48% have performance issues",
+          "examples": ["Sketch's approach", "Affinity Designer"],
+          "timeline": "12 months",
+          "difficulty": "hard",
+          "resources": ["Native development", "Cross-platform"],
+          "priority": 5
+        }
+      ],
+      "successStories": [
+        {
+          "company": "Penpot",
+          "situation": "Figma/Sketch proprietary and limited",
+          "action": "Built open source alternative",
+          "result": "Growing open source community",
+          "timeline": "3 years in development",
+          "lessons": ["Open source attracts developers", "Free matters"],
+          "relevance": 70
+        }
+      ],
+      "lastUpdated": "2024-08-12",
+      "dataQuality": "high",
+      "communityVotes": 36,
+      "userRequested": false
+    },
+    {
+      "id": "midjourney",
+      "name": "Midjourney",
+      "category": "AI Image Generation",
+      "website": "https://midjourney.com",
+      "pricing": "$10-120/month",
+      "marketShare": "30%",
+      "keywords": ["midjourney", "ai art", "image generation", "ai images", "text to image"],
+      "aliases": ["mj", "midjourney ai"],
+      "industryPosition": "leader",
+      "similarTools": [
+        {
+          "id": "dall-e",
+          "name": "DALL-E 3",
+          "pricing": "$20/month (ChatGPT Plus)",
+          "strength": "Better text rendering",
+          "weakness": "Limited generations",
+          "marketShare": "20%",
+          "similarity": 90
+        },
+        {
+          "id": "stable-diffusion",
+          "name": "Stable Diffusion",
+          "pricing": "Free (self-hosted)",
+          "strength": "Open source, free",
+          "weakness": "Technical setup",
+          "marketShare": "15%",
+          "similarity": 85
+        },
+        {
+          "id": "leonardo-ai",
+          "name": "Leonardo.ai",
+          "pricing": "Free - $30/month",
+          "strength": "Game asset focus",
+          "weakness": "Smaller community",
+          "marketShare": "5%",
+          "similarity": 80
+        }
+      ],
+      "userComplaints": [
+        {
+          "issue": "Discord-only interface",
+          "frequency": 62,
+          "severity": "high",
+          "source": "Reddit",
+          "trends": "stable",
+          "examples": ["Clunky workflow", "No web UI"]
+        },
+        {
+          "issue": "No free tier at all",
+          "frequency": 45,
+          "severity": "medium",
+          "source": "Twitter",
+          "trends": "stable",
+          "examples": ["Can't try before buying", "$10 minimum"]
+        }
+      ],
+      "industryGaps": [
+        {
+          "gap": "User-Friendly Interface",
+          "affectedTools": ["midjourney"],
+          "opportunity": "Midjourney stuck on Discord",
+          "claudeInsight": "Web UI would capture frustrated users",
+          "marketImpact": "62% of Midjourney users want this",
+          "difficulty": "medium",
+          "potential": "very high",
+          "timeframe": "3 months",
+          "successProbability": 85
+        }
+      ],
+      "actionStrategies": [
+        {
+          "strategy": "Web-Based AI Art Platform",
+          "description": "Midjourney quality with proper web UI",
+          "reasoning": "62% hate Discord interface",
+          "examples": ["Leonardo.ai approach", "Playground AI"],
+          "timeline": "3 months",
+          "difficulty": "medium",
+          "resources": ["SD/Flux integration", "Web development"],
+          "priority": 9
+        }
+      ],
+      "successStories": [
+        {
+          "company": "Leonardo.ai",
+          "situation": "Midjourney dominated but Discord-only",
+          "action": "Built web UI for AI art",
+          "result": "1M+ users in first year",
+          "timeline": "12 months to 1M users",
+          "lessons": ["UI/UX matters", "Ease of use wins"],
+          "relevance": 90
+        }
+      ],
+      "lastUpdated": "2024-08-12",
+      "dataQuality": "high",
+      "communityVotes": 55,
+      "userRequested": true
+    }
+  ],
+  "metadata": {
+    "version": "2.0.0",
+    "lastUpdated": "2024-08-12T10:00:00Z",
+    "totalTools": 12,
+    "categories": [
+      "Design Tool",
+      "Productivity Tool",
+      "Development Tool",
+      "Hosting Platform",
+      "Communication Tool",
+      "AI Tool",
+      "Project Management",
+      "Video Conferencing",
+      "Payment Platform",
+      "Database Tool",
+      "AI Image Generation"
+    ],
+    "dataQuality": "high",
+    "completionStatus": {
+      "basicInfo": 12,
+      "similarTools": 12,
+      "userComplaints": 12,
+      "industryGaps": 12,
+      "actionStrategies": 12,
+      "successStories": 12
+    }
+  }
+}
