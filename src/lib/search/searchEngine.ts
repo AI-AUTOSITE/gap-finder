@@ -218,29 +218,29 @@ export class SearchEngine {
   /**
    * マッチしたキーワードを抽出
    */
-  private extractMatchedKeywords(result: Fuse.FuseResult<CompetitorData>): string[] {
-    const keywords = new Set<string>();
-    
-    result.matches?.forEach(match => {
-      if (match.value) {
-        keywords.add(match.value);
-      }
-    });
-    
-    return Array.from(keywords);
-  }
+private extractMatchedKeywords(result: any): string[] {
+  const keywords = new Set<string>();
+  
+  result.matches?.forEach((match: any) => {
+    if (match.value) {
+      keywords.add(match.value);
+    }
+  });
+  
+  return Array.from(keywords);
+}
   
   /**
    * マッチタイプを判定
    */
-  private determineMatchType(result: Fuse.FuseResult<CompetitorData>): 'exact' | 'partial' | 'similar' | 'category' {
-    const score = result.score || 0;
-    
-    if (score < 0.1) return 'exact';
-    if (score < 0.3) return 'partial';
-    if (score < 0.5) return 'similar';
-    return 'category';
-  }
+private determineMatchType(result: any): 'exact' | 'partial' | 'similar' | 'category' {
+  const score = result.score || 0;
+  
+  if (score < 0.1) return 'exact';
+  if (score < 0.3) return 'partial';
+  if (score < 0.5) return 'similar';
+  return 'category';
+}
   
   /**
    * 類似ツールを検索結果形式で取得
