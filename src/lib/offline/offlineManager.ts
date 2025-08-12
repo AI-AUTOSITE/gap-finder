@@ -234,9 +234,9 @@ export class OfflineManager {
     
     // 優先度でソート
     actions.sort((a, b) => {
-      const priorityOrder = { high: 0, medium: 1, low: 2 };
-      return priorityOrder[a.priority] - priorityOrder[b.priority];
-    });
+  const priorityOrder: Record<string, number> = { high: 0, medium: 1, low: 2 };
+  return (priorityOrder[a.priority] || 1) - (priorityOrder[b.priority] || 1);
+});
     
     // 各アクションを処理
     for (const action of actions) {
