@@ -24,7 +24,7 @@
   
   /* フォーカス表示の改善 */
   :focus-visible {
-    outline: 2px solid theme('colors.brand.500');
+    outline: 2px solid theme('colors.blue.500');
     outline-offset: 2px;
   }
   
@@ -56,7 +56,7 @@
   }
   
   .btn-primary {
-    @apply btn bg-brand-500 hover:bg-brand-600 active:bg-brand-700 text-white shadow-md hover:shadow-lg focus-visible:ring-brand-500;
+    @apply btn bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white shadow-md hover:shadow-lg focus-visible:ring-blue-500;
   }
   
   .btn-secondary {
@@ -64,7 +64,7 @@
   }
   
   .btn-outline {
-    @apply btn border-2 border-brand-500 text-brand-600 hover:bg-brand-50 active:bg-brand-100 focus-visible:ring-brand-500;
+    @apply btn border-2 border-blue-500 text-blue-600 hover:bg-blue-50 active:bg-blue-100 focus-visible:ring-blue-500;
   }
   
   .btn-ghost {
@@ -98,7 +98,7 @@
   
   /* インプットフィールド */
   .input-field {
-    @apply w-full px-3 py-2.5 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 transition-colors focus:border-brand-500 focus:ring-4 focus:ring-brand-100 focus:outline-none;
+    @apply w-full px-3 py-2.5 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 transition-colors focus:border-blue-500 focus:ring-4 focus:ring-blue-100 focus:outline-none;
   }
   
   .input-field-lg {
@@ -107,7 +107,7 @@
   
   /* 検索ボックス特別スタイル */
   .search-box {
-    @apply input-field-lg shadow-lg border-gray-200 focus:border-brand-500 focus:ring-brand-100 focus:shadow-xl;
+    @apply input-field-lg shadow-lg border-gray-200 focus:border-blue-500 focus:ring-blue-100 focus:shadow-xl;
   }
   
   /* タブナビゲーション */
@@ -116,11 +116,11 @@
   }
   
   .tab-button {
-    @apply flex-1 px-3 py-2 text-sm font-medium text-gray-700 rounded-md transition-all hover:text-gray-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500;
+    @apply flex-1 px-3 py-2 text-sm font-medium text-gray-700 rounded-md transition-all hover:text-gray-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500;
   }
   
   .tab-button-active {
-    @apply bg-white text-brand-600 shadow-sm;
+    @apply bg-white text-blue-600 shadow-sm;
   }
   
   /* バッジ・ラベル */
@@ -129,19 +129,19 @@
   }
   
   .badge-success {
-    @apply badge bg-success-100 text-success-800;
+    @apply badge bg-green-100 text-green-800;
   }
   
   .badge-warning {
-    @apply badge bg-warning-100 text-warning-800;
+    @apply badge bg-yellow-100 text-yellow-800;
   }
   
   .badge-danger {
-    @apply badge bg-danger-100 text-danger-800;
+    @apply badge bg-red-100 text-red-800;
   }
   
   .badge-info {
-    @apply badge bg-info-100 text-info-800;
+    @apply badge bg-blue-100 text-blue-800;
   }
   
   /* スケルトンローディング */
@@ -186,7 +186,7 @@
   
   /* オフライン表示 */
   .offline-indicator {
-    @apply fixed top-0 left-0 right-0 bg-warning-500 text-white text-center py-2 z-50 text-sm font-medium;
+    @apply fixed top-0 left-0 right-0 bg-yellow-500 text-white text-center py-2 z-50 text-sm font-medium;
   }
   
   /* PWA安全領域対応 */
@@ -208,11 +208,11 @@
   
   /* グラデーション */
   .gradient-brand {
-    background: linear-gradient(135deg, theme('colors.brand.500'), theme('colors.brand.600'));
+    background: linear-gradient(135deg, theme('colors.blue.500'), theme('colors.blue.600'));
   }
   
   .gradient-success {
-    background: linear-gradient(135deg, theme('colors.success.500'), theme('colors.success.600'));
+    background: linear-gradient(135deg, theme('colors.green.500'), theme('colors.green.600'));
   }
 }
 
@@ -252,5 +252,15 @@
   
   .card {
     @apply shadow-none border border-gray-300;
+  }
+}
+
+/* アニメーション定義（skeletonアニメーション用） */
+@keyframes skeleton {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
   }
 }
