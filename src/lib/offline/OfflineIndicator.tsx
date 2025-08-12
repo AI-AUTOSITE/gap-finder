@@ -10,6 +10,7 @@ import {
   Check, 
   AlertCircle,
   X,
+  ChevronDown,
   Download,
   RefreshCw
 } from 'lucide-react';
