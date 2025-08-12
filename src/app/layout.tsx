@@ -102,6 +102,40 @@ export const metadata: Metadata = {
     'theme-color': '#3b82f6',
   },
 };
+// src/app/layout.tsx に追加
+
+useEffect(() => {
+  // データ初期化時に免責事項を確認
+  const showDisclaimer = () => {
+    const hasSeenDisclaimer = localStorage.getItem('disclaimer-acknowledged');
+    
+    if (!hasSeenDisclaimer) {
+      // 初回訪問時に免責事項を表示
+      const disclaimer = document.createElement('div');
+      disclaimer.className = 'fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4';
+      disclaimer.innerHTML = `
+        <div class="bg-white rounded-xl p-6 max-w-md">
+          <h2 class="text-xl font-bold mb-4">Welcome to Gap Finder</h2>
+          <div class="text-sm text-gray-600 space-y-2">
+            <p>• This tool provides market analysis for educational purposes</p>
+            <p>• We respect all products and companies mentioned</p>
+            <p>• Analysis focuses on opportunities, not criticisms</p>
+            <p>• Use insights as inspiration for innovation</p>
+          </div>
+          <button 
+            onclick="this.parentElement.parentElement.remove(); localStorage.setItem('disclaimer-acknowledged', 'true')"
+            class="mt-4 w-full btn-primary btn-md"
+          >
+            I Understand
+          </button>
+        </div>
+      `;
+      document.body.appendChild(disclaimer);
+    }
+  };
+  
+  showDisclaimer();
+}, []);
 
 // ビューポート設定（PWA最適化）
 export const viewport: Viewport = {
