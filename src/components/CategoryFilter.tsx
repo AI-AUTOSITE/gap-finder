@@ -18,7 +18,7 @@ import {
   Package,
   GraduationCap,
   Heart,
-  Grid3x3,
+  Grid3X3,  // ← 修正：Grid3x3 → Grid3X3（大文字のX）
   ChevronRight
 } from 'lucide-react';
 
@@ -50,8 +50,8 @@ const categoryIcons: Record<string, React.ReactNode> = {
   'Health': <Heart className="h-4 w-4" />,
   'Hosting Platform': <Package className="h-4 w-4" />,
   'Video Conferencing': <MessageSquare className="h-4 w-4" />,
-  'Database Tool': <Grid3x3 className="h-4 w-4" />,
-  'Other': <Grid3x3 className="h-4 w-4" />
+  'Database Tool': <Grid3X3 className="h-4 w-4" />,  // ← 修正
+  'Other': <Grid3X3 className="h-4 w-4" />  // ← 修正
 };
 
 // カテゴリの説明
@@ -113,7 +113,7 @@ export function CategoryFilter({
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-          <Grid3x3 className="h-5 w-5 text-brand-500" />
+          <Grid3X3 className="h-5 w-5 text-brand-500" />  {/* ← 修正 */}
           Browse by Category
         </h3>
         
@@ -143,7 +143,7 @@ export function CategoryFilter({
           <div className="flex items-start justify-between">
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">
-                <Grid3x3 className={`h-4 w-4 ${!selectedCategory ? 'text-brand-600' : 'text-gray-600'}`} />
+                <Grid3X3 className={`h-4 w-4 ${!selectedCategory ? 'text-brand-600' : 'text-gray-600'}`} />  {/* ← 修正 */}
                 <span className={`font-medium ${!selectedCategory ? 'text-brand-700' : 'text-gray-900'}`}>
                   All Tools
                 </span>
