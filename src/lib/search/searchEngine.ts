@@ -1,5 +1,6 @@
 // src/lib/search/searchEngine.ts
 import Fuse from 'fuse.js';
+import type { FuseResult } from 'fuse.js';
 import type { 
   CompetitorData, 
   SearchResult, 
