@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import { Target, Wifi, WifiOff, Download, Info, ChevronDown } from 'lucide-react';
 import { SearchBox } from './SearchBox';
-import { CategoryFilter } from './CategoryFilter';
+import { CategoryFilter } from '../CategoryFilter';
 import { SearchEngine, initSearchEngineFromJSON } from '@/lib/search/searchEngine';
 import type { SearchResult, CompetitorData } from '@/types';
 
