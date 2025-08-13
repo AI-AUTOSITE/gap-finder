@@ -40,7 +40,7 @@ export function ShareButton({
   const [copied, setCopied] = useState(false);
   const [qrCode, setQrCode] = useState<string | null>(null);
 
-  // Web Share APIを使用（対応ブラウザのみ）
+  // Use Web Share API (for supported browsers)
   const handleNativeShare = async () => {
     if (navigator.share) {
       try {
@@ -50,20 +50,20 @@ export function ShareButton({
           url
         });
         
-        // 共有成功を記録
+        // Record successful share
         trackShare('native');
       } catch (error) {
         if ((error as Error).name !== 'AbortError') {
           console.error('Share failed:', error);
-          setShowModal(true); // フォールバック
+          setShowModal(true); // Fallback
         }
       }
     } else {
-      setShowModal(true); // Web Share API非対応
+      setShowModal(true); // Web Share API not supported
     }
   };
 
-  // 各プラットフォームへのシェア
+  // Share to each platform
   const shareOptions = [
     {
       name: 'Twitter',
@@ -128,15 +128,15 @@ export function ShareButton({
     }
   ];
 
-  // QRコード生成
+  // Generate QR Code
   const generateQRCode = () => {
     const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}`;
     setQrCode(qrApiUrl);
   };
 
-  // シェア追跡
+  // Track share events
   const trackShare = (platform: string) => {
-    // アナリティクスイベント送信
+    // Send analytics event
     if (typeof window !== 'undefined' && (window as any).gtag) {
       (window as any).gtag('event', 'share', {
         method: platform,
@@ -145,7 +145,7 @@ export function ShareButton({
       });
     }
     
-    // アプリ内通知
+    // In-app notification
     window.dispatchEvent(new CustomEvent('app-notification', {
       detail: {
         type: 'success',
@@ -154,7 +154,7 @@ export function ShareButton({
     }));
   };
 
-  // フローティングボタンスタイル
+  // Floating button style
   if (variant === 'floating' && position === 'fixed') {
     return (
       <>
@@ -170,7 +170,7 @@ export function ShareButton({
     );
   }
 
-  // アイコンのみ
+  // Icon only
   if (variant === 'icon') {
     return (
       <>
@@ -186,7 +186,7 @@ export function ShareButton({
     );
   }
 
-  // 通常ボタン
+  // Normal button
   return (
     <>
       <button
@@ -201,7 +201,7 @@ export function ShareButton({
   );
 }
 
-// シェアモーダル
+// Share Modal Component
 function ShareModal({ 
   options, 
   onClose, 
@@ -278,3 +278,4 @@ function ShareModal({
     </div>
   );
 }
+export default ShareButton;

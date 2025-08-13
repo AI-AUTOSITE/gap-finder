@@ -7,6 +7,9 @@ import { Analytics } from '@vercel/analytics/react';
 import { QuickActions } from '@/components/ui/QuickActions';
 import { KeyboardShortcuts } from '@/components/ui/KeyboardShortcuts';
 import './globals.css';
+import ShareButton from '@/components/ui/ShareButton'
+import FeedbackWidget from '@/components/feedback/FeedbackWidget'
+import NPSSurvey from '@/components/feedback/NPSSurvey'
 
 // フォント最適化
 const inter = Inter({ 

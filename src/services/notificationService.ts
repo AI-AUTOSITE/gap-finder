@@ -84,21 +84,22 @@ class NotificationService {
   /**
    * ブラウザ通知を表示
    */
+/**
+   * ブラウザ通知を表示
+   */
   private showBrowserNotification(notification: Notification): void {
     if ('Notification' in window && Notification.permission === 'granted') {
-      const browserNotif = new Notification(notification.title, {
+      // NotificationOptionsの型定義（actionsを除外）
+      const options: NotificationOptions = {
         body: notification.message,
         icon: '/icons/icon-192x192.png',
         badge: '/icons/icon-72x72.png',
         tag: notification.id,
         requireInteraction: notification.priority === 'high',
-        actions: notification.actionUrl ? [
-          {
-            action: 'open',
-            title: notification.actionLabel || 'View'
-          }
-        ] : []
-      });
+        // actionsプロパティは削除（ServiceWorkerでのみ使用可能）
+      };
+      
+      const browserNotif = new window.Notification(notification.title, options);
       
       // クリックハンドラー
       browserNotif.onclick = () => {

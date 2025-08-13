@@ -18,7 +18,8 @@ import {
   FolderPlus,
   Tag,
   Clock,
-  TrendingUp
+  TrendingUp,
+  Zap
 } from 'lucide-react';
 import type { CompetitorData } from '@/types';
 
