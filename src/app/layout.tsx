@@ -1,3 +1,6 @@
+'use client'; // Client Componentとして宣言
+
+import { useEffect } from 'react';
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/react';
@@ -9,146 +12,6 @@ const inter = Inter({
   display: 'swap',
   variable: '--font-inter',
 });
-
-// SEO最適化されたメタデータ
-export const metadata: Metadata = {
-  title: {
-    default: 'Gap Finder - Smart Competitor Analysis for Indie Hackers',
-    template: '%s | Gap Finder'
-  },
-  description: 'Find market gaps and competitive advantages instantly. Analyze competitors + similar tools offline. Built for indie hackers who want to win.',
-  keywords: [
-    'competitor analysis',
-    'market gaps', 
-    'indie hackers',
-    'startup tools',
-    'business intelligence',
-    'competitive research',
-    'market research',
-    'startup strategy'
-  ],
-  authors: [{ name: 'Gap Finder Team', url: 'https://gap-finder.com' }],
-  creator: 'Gap Finder',
-  publisher: 'Gap Finder',
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://gap-finder.com'),
-  alternates: {
-    canonical: '/',
-  },
-  openGraph: {
-    type: 'website',
-    locale: 'en_US',
-    url: '/',
-    siteName: 'Gap Finder',
-    title: 'Gap Finder - Smart Competitor Analysis for Indie Hackers',
-    description: 'Find market gaps and competitive advantages instantly. Works offline, powered by AI insights.',
-    images: [
-      {
-        url: '/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'Gap Finder - Competitor Analysis Tool',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    site: '@gapfinder',
-    creator: '@gapfinder',
-    title: 'Gap Finder - Smart Competitor Analysis',
-    description: 'Find market gaps and competitive advantages instantly. Built for indie hackers.',
-    images: ['/twitter-image.png'],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    nocache: false,
-    googleBot: {
-      index: true,
-      follow: true,
-      noimageindex: false,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
-  icons: {
-    icon: [
-      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
-      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-    ],
-    apple: [
-      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
-    ],
-    other: [
-      { rel: 'mask-icon', url: '/safari-pinned-tab.svg', color: '#3b82f6' },
-    ],
-  },
-  manifest: '/manifest.json',
-  category: 'business',
-  classification: 'Business Tools',
-  // 構造化データ
-  other: {
-    'application-name': 'Gap Finder',
-    'mobile-web-app-capable': 'yes',
-    'mobile-web-app-status-bar-style': 'default',
-    'mobile-web-app-title': 'Gap Finder',
-    'msapplication-config': '/browserconfig.xml',
-    'msapplication-TileColor': '#3b82f6',
-    'theme-color': '#3b82f6',
-  },
-};
-// src/app/layout.tsx に追加
-
-useEffect(() => {
-  // データ初期化時に免責事項を確認
-  const showDisclaimer = () => {
-    const hasSeenDisclaimer = localStorage.getItem('disclaimer-acknowledged');
-    
-    if (!hasSeenDisclaimer) {
-      // 初回訪問時に免責事項を表示
-      const disclaimer = document.createElement('div');
-      disclaimer.className = 'fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4';
-      disclaimer.innerHTML = `
-        <div class="bg-white rounded-xl p-6 max-w-md">
-          <h2 class="text-xl font-bold mb-4">Welcome to Gap Finder</h2>
-          <div class="text-sm text-gray-600 space-y-2">
-            <p>• This tool provides market analysis for educational purposes</p>
-            <p>• We respect all products and companies mentioned</p>
-            <p>• Analysis focuses on opportunities, not criticisms</p>
-            <p>• Use insights as inspiration for innovation</p>
-          </div>
-          <button 
-            onclick="this.parentElement.parentElement.remove(); localStorage.setItem('disclaimer-acknowledged', 'true')"
-            class="mt-4 w-full btn-primary btn-md"
-          >
-            I Understand
-          </button>
-        </div>
-      `;
-      document.body.appendChild(disclaimer);
-    }
-  };
-  
-  showDisclaimer();
-}, []);
-
-// ビューポート設定（PWA最適化）
-export const viewport: Viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  maximumScale: 5,
-  userScalable: true,
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#3b82f6' },
-    { media: '(prefers-color-scheme: dark)', color: '#1e40af' },
-  ],
-  colorScheme: 'light',
-};
 
 // 構造化データ（JSON-LD）
 const structuredData = {
@@ -175,66 +38,6 @@ const structuredData = {
     ratingCount: '127'
   }
 };
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <html lang="en" className={inter.variable}>
-      <head>
-        {/* 構造化データ */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(structuredData),
-          }}
-        />
-        
-        {/* パフォーマンス最適化 */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        
-        {/* PWA関連 */}
-        <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="Gap Finder" />
-        
-        {/* DNS prefetch */}
-        <link rel="dns-prefetch" href="//api.anthropic.com" />
-        <link rel="dns-prefetch" href="//vercel.com" />
-      </head>
-      <body className={`${inter.className} antialiased`}>
-        {/* スキップリンク（アクセシビリティ） */}
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-brand-500 text-white px-4 py-2 rounded-lg z-50"
-        >
-          Skip to main content
-        </a>
-        
-        {/* メインコンテンツ */}
-        <div id="main-content" className="min-h-screen bg-gray-50">
-          {children}
-        </div>
-        
-        {/* オフライン状態インジケーター */}
-        <OfflineIndicator />
-        
-        {/* PWAインストールプロンプト */}
-        <PWAInstallPrompt />
-        
-        {/* 分析ツール */}
-        <Analytics />
-        
-        {/* サービスワーカー登録 */}
-        <ServiceWorkerRegistration />
-      </body>
-    </html>
-  );
-}
 
 // オフライン状態インジケーター
 function OfflineIndicator() {
@@ -322,5 +125,144 @@ function ServiceWorkerRegistration() {
         `,
       }}
     />
+  );
+}
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  // 免責事項の表示処理
+  useEffect(() => {
+    // データ初期化時に免責事項を確認
+    const showDisclaimer = () => {
+      const hasSeenDisclaimer = localStorage.getItem('disclaimer-acknowledged');
+      
+      if (!hasSeenDisclaimer) {
+        // 初回訪問時に免責事項を表示
+        const disclaimer = document.createElement('div');
+        disclaimer.className = 'fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4';
+        disclaimer.innerHTML = `
+          <div class="bg-white rounded-xl p-6 max-w-md">
+            <h2 class="text-xl font-bold mb-4">Welcome to Gap Finder</h2>
+            <div class="text-sm text-gray-600 space-y-2">
+              <p>• This tool provides market analysis for educational purposes</p>
+              <p>• We respect all products and companies mentioned</p>
+              <p>• Analysis focuses on opportunities, not criticisms</p>
+              <p>• Use insights as inspiration for innovation</p>
+            </div>
+            <button 
+              onclick="this.parentElement.parentElement.remove(); localStorage.setItem('disclaimer-acknowledged', 'true')"
+              class="mt-4 w-full btn-primary btn-md"
+            >
+              I Understand
+            </button>
+          </div>
+        `;
+        document.body.appendChild(disclaimer);
+      }
+    };
+    
+    showDisclaimer();
+  }, []);
+
+  return (
+    <html lang="en" className={inter.variable}>
+      <head>
+        {/* 構造化データ */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(structuredData),
+          }}
+        />
+        
+        {/* パフォーマンス最適化 */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        
+        {/* PWA関連 */}
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="Gap Finder" />
+        
+        {/* DNS prefetch */}
+        <link rel="dns-prefetch" href="//api.anthropic.com" />
+        <link rel="dns-prefetch" href="//vercel.com" />
+        
+        {/* SEO最適化されたメタデータ */}
+        <title>Gap Finder - Smart Competitor Analysis for Indie Hackers</title>
+        <meta name="description" content="Find market gaps and competitive advantages instantly. Analyze competitors + similar tools offline. Built for indie hackers who want to win." />
+        <meta name="keywords" content="competitor analysis, market gaps, indie hackers, startup tools, business intelligence, competitive research, market research, startup strategy" />
+        <meta name="author" content="Gap Finder Team" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes" />
+        
+        {/* Open Graph */}
+        <meta property="og:type" content="website" />
+        <meta property="og:locale" content="en_US" />
+        <meta property="og:url" content="/" />
+        <meta property="og:site_name" content="Gap Finder" />
+        <meta property="og:title" content="Gap Finder - Smart Competitor Analysis for Indie Hackers" />
+        <meta property="og:description" content="Find market gaps and competitive advantages instantly. Works offline, powered by AI insights." />
+        <meta property="og:image" content="/og-image.png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Gap Finder - Competitor Analysis Tool" />
+        
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@gapfinder" />
+        <meta name="twitter:creator" content="@gapfinder" />
+        <meta name="twitter:title" content="Gap Finder - Smart Competitor Analysis" />
+        <meta name="twitter:description" content="Find market gaps and competitive advantages instantly. Built for indie hackers." />
+        <meta name="twitter:image" content="/twitter-image.png" />
+        
+        {/* ファビコン */}
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#3b82f6" />
+        <link rel="manifest" href="/manifest.json" />
+        
+        {/* その他のメタデータ */}
+        <meta name="application-name" content="Gap Finder" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="mobile-web-app-status-bar-style" content="default" />
+        <meta name="mobile-web-app-title" content="Gap Finder" />
+        <meta name="msapplication-config" content="/browserconfig.xml" />
+        <meta name="msapplication-TileColor" content="#3b82f6" />
+        <meta name="theme-color" content="#3b82f6" />
+        <meta name="format-detection" content="telephone=no, date=no, email=no, address=no" />
+        <meta name="robots" content="index, follow, nocache" />
+      </head>
+      <body className={`${inter.className} antialiased`}>
+        {/* スキップリンク（アクセシビリティ） */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-brand-500 text-white px-4 py-2 rounded-lg z-50"
+        >
+          Skip to main content
+        </a>
+        
+        {/* メインコンテンツ */}
+        <div id="main-content" className="min-h-screen bg-gray-50">
+          {children}
+        </div>
+        
+        {/* オフライン状態インジケーター */}
+        <OfflineIndicator />
+        
+        {/* PWAインストールプロンプト */}
+        <PWAInstallPrompt />
+        
+        {/* 分析ツール */}
+        <Analytics />
+        
+        {/* サービスワーカー登録 */}
+        <ServiceWorkerRegistration />
+      </body>
+    </html>
   );
 }

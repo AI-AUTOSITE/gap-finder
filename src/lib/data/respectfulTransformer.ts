@@ -1,5 +1,103 @@
 // src/lib/data/respectfulTransformer.ts
 
+// 型定義を追加
+interface PricingTier {
+  name: string;
+  price: number;
+  features: string[];
+}
+
+interface SimilarTool {
+  name: string;
+  strength?: string;
+  weakness?: string;
+  marketShare?: string;
+}
+
+interface UserComplaint {
+  issue: string;
+  frequency: number;
+  severity: 'low' | 'medium' | 'high';
+  userType?: string;
+}
+
+interface IndustryGap {
+  gap: string;
+  opportunity: string;
+  successProbability: number;
+  claudeInsight?: string;
+}
+
+interface SuccessStory {
+  company: string;
+  action: string;
+  result: string;
+  lessons: string[];
+  relevance: string;
+}
+
+interface CompetitorData {
+  id: string;
+  name: string;
+  category: string;
+  website: string;
+  pricing: PricingTier[];
+  marketShare?: string;
+  similarTools?: SimilarTool[];
+  userComplaints: UserComplaint[];
+  industryGaps: IndustryGap[];
+  successStories: SuccessStory[];
+  lastUpdated: string;
+  dataQuality: 'high' | 'medium' | 'basic';
+}
+
+interface TransformedStrength {
+  feature: string;
+  description: string;
+  userBenefit: string;
+  marketRecognition: string;
+}
+
+interface TransformedOpportunity {
+  area: string;
+  currentApproach: string;
+  potentialEnhancement: string;
+  userBenefit: string;
+  implementationPath: string;
+}
+
+interface TransformedMarketOpportunity {
+  opportunity: string;
+  marketNeed: string;
+  potentialApproach: string[];
+  estimatedImpact: string;
+  inspiration: string;
+}
+
+interface TransformedSuccessStory {
+  company: string;
+  approach: string;
+  outcome: string;
+  keyTakeaway: string;
+  applicability: string;
+}
+
+interface RespectfulCompetitorAnalysis {
+  id: string;
+  name: string;
+  category: string;
+  website: string;
+  pricing: PricingTier[];
+  marketShare?: string;
+  strengths: TransformedStrength[];
+  improvementOpportunities: TransformedOpportunity[];
+  marketOpportunities: TransformedMarketOpportunity[];
+  inspiringExamples: TransformedSuccessStory[];
+  lastUpdated: string;
+  dataQuality: 'comprehensive' | 'detailed' | 'essential';
+  disclaimer: string;
+}
+
 export class RespectfulDataTransformer {
   
   // ネガティブな表現を建設的に変換
@@ -67,12 +165,12 @@ export class RespectfulDataTransformer {
   }
   
   // 強みを強調して拡張
-  private static enhanceStrengths(data: CompetitorData): any[] {
-    const strengths = [];
+  private static enhanceStrengths(data: CompetitorData): TransformedStrength[] {
+    const strengths: TransformedStrength[] = [];
     
     // 既存の強みがあれば使用
     if (data.similarTools && data.similarTools.length > 0) {
-      data.similarTools.forEach(tool => {
+      data.similarTools.forEach((tool: SimilarTool) => {
         if (tool.strength) {
           strengths.push({
             feature: tool.strength,
@@ -103,8 +201,8 @@ export class RespectfulDataTransformer {
   }
   
   // 不満を改善機会に変換
-  private static transformComplaints(complaints: UserComplaint[]): any[] {
-    return complaints.map(complaint => ({
+  private static transformComplaints(complaints: UserComplaint[]): TransformedOpportunity[] {
+    return complaints.map((complaint: UserComplaint) => ({
       area: this.makeRespectful(complaint.issue),
       currentApproach: `Currently handles this in a ${this.getPositiveAdjective()} way`,
       potentialEnhancement: `Opportunity to further optimize ${this.extractArea(complaint.issue)}`,
@@ -114,8 +212,8 @@ export class RespectfulDataTransformer {
   }
   
   // ギャップを市場機会に変換
-  private static transformGaps(gaps: IndustryGap[]): any[] {
-    return gaps.map(gap => ({
+  private static transformGaps(gaps: IndustryGap[]): TransformedMarketOpportunity[] {
+    return gaps.map((gap: IndustryGap) => ({
       opportunity: this.makeRespectful(gap.gap),
       marketNeed: gap.opportunity,
       potentialApproach: [
@@ -129,8 +227,8 @@ export class RespectfulDataTransformer {
   }
   
   // 成功事例を inspirational に変換
-  private static transformSuccessStories(stories: SuccessStory[]): any[] {
-    return stories.map(story => ({
+  private static transformSuccessStories(stories: SuccessStory[]): TransformedSuccessStory[] {
+    return stories.map((story: SuccessStory) => ({
       company: story.company,
       approach: story.action,
       outcome: this.makePositive(story.result),
@@ -171,12 +269,12 @@ export class RespectfulDataTransformer {
   }
   
   // 難易度をパスに変換
-  private static mapDifficultyToPath(severity: string): string {
+  private static mapDifficultyToPath(severity: 'low' | 'medium' | 'high'): string {
     switch(severity) {
-      case 'low': return 'straightforward';
-      case 'medium': return 'moderate';
-      case 'high': return 'complex';
-      default: return 'moderate';
+      case 'low': return 'straightforward enhancement path';
+      case 'medium': return 'moderate implementation approach';
+      case 'high': return 'complex but rewarding journey';
+      default: return 'moderate implementation approach';
     }
   }
   
@@ -189,7 +287,7 @@ export class RespectfulDataTransformer {
   }
   
   // データ品質を変換
-  private static transformQuality(quality: string): 'comprehensive' | 'detailed' | 'essential' {
+  private static transformQuality(quality: 'high' | 'medium' | 'basic'): 'comprehensive' | 'detailed' | 'essential' {
     switch(quality) {
       case 'high': return 'comprehensive';
       case 'medium': return 'detailed';
@@ -198,3 +296,18 @@ export class RespectfulDataTransformer {
     }
   }
 }
+
+// 型定義をエクスポート（他のファイルで使用する場合）
+export type {
+  CompetitorData,
+  RespectfulCompetitorAnalysis,
+  UserComplaint,
+  IndustryGap,
+  SuccessStory,
+  SimilarTool,
+  PricingTier,
+  TransformedStrength,
+  TransformedOpportunity,
+  TransformedMarketOpportunity,
+  TransformedSuccessStory
+};

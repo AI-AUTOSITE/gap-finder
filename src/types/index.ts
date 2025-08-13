@@ -87,6 +87,60 @@ export interface SuccessStory {
 }
 
 // =============================================================================
+// RESPECTFUL COMPETITOR ANALYSIS (ETHICAL APPROACH)
+// =============================================================================
+
+export interface RespectfulCompetitorAnalysis {
+  // Basic information
+  id: string;
+  name: string;
+  category: string;
+  website: string;
+  pricing: string;
+  marketShare?: string;
+  
+  // Always start with strengths (aligned with principles)
+  strengths: {
+    feature: string;
+    description: string;
+    userBenefit: string;
+    marketRecognition?: string; // Market evaluation
+  }[];
+  
+  // Improvement opportunities (possibilities, not criticism)
+  improvementOpportunities: {
+    area: string;
+    currentApproach: string; // Current approach (neutral)
+    potentialEnhancement: string; // Enhancement potential
+    userBenefit: string;
+    implementationPath: 'straightforward' | 'moderate' | 'complex';
+  }[];
+  
+  // Market opportunities (opportunities, not gaps)
+  marketOpportunities: {
+    opportunity: string;
+    marketNeed: string; // Why it's needed
+    potentialApproach: string[];
+    estimatedImpact: string;
+    inspiration: string; // Where to get inspiration from
+  }[];
+  
+  // Success stories (inspiration)
+  inspiringExamples: {
+    company: string;
+    approach: string; // What approach they took
+    outcome: string; // Result (constructive)
+    keyTakeaway: string;
+    applicability: number; // 0-100
+  }[];
+  
+  // Metadata
+  lastUpdated: string;
+  dataQuality: 'comprehensive' | 'detailed' | 'essential';
+  disclaimer: string; // Always include
+}
+
+// =============================================================================
 // DEEP DIVE ANALYSIS (PRO FEATURES)
 // =============================================================================
 
@@ -334,57 +388,6 @@ export interface TabConfig {
   description: string;
   proFeature?: boolean;
 }
-// src/types/index.ts に追加する建設的な型定義
-
-export interface RespectfulCompetitorAnalysis {
-  // 基本情報
-  id: string;
-  name: string;
-  category: string;
-  website: string;
-  pricing: string;
-  marketShare?: string;
-  
-  // 必ず強みから始める（理念準拠）
-  strengths: {
-    feature: string;
-    description: string;
-    userBenefit: string;
-    marketRecognition?: string; // 市場での評価
-  }[];
-  
-  // 改善機会（批判ではなく可能性）
-  improvementOpportunities: {
-    area: string;
-    currentApproach: string; // 現在のアプローチ（中立的）
-    potentialEnhancement: string; // 強化の可能性
-    userBenefit: string;
-    implementationPath: 'straightforward' | 'moderate' | 'complex';
-  }[];
-  
-  // 市場機会（ギャップではなく機会）
-  marketOpportunities: {
-    opportunity: string;
-    marketNeed: string; // なぜ必要とされているか
-    potentialApproach: string[];
-    estimatedImpact: string;
-    inspiration: string; // どこから着想を得られるか
-  }[];
-  
-  // 成功事例（インスピレーション）
-  inspiringExamples: {
-    company: string;
-    approach: string; // どんなアプローチを取ったか
-    outcome: string; // 結果（建設的に）
-    keyTakeaway: string;
-    applicability: number; // 0-100
-  }[];
-  
-  // メタデータ
-  lastUpdated: string;
-  dataQuality: 'comprehensive' | 'detailed' | 'essential';
-  disclaimer: string; // 常に含める
-}
 
 export interface ComponentProps {
   className?: string;
@@ -395,7 +398,6 @@ export interface PageProps {
   params: Promise<{ [key: string]: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
-
 
 // =============================================================================
 // CONSTANTS
