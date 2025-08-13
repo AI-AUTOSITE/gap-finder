@@ -12,18 +12,34 @@ export class DataLoader {
 
     try {
       const response = await fetch('/data/index.json');
-      this.index = await response.json();
+      const data = await response.json();
+      this.index = data;
       
       // IndexedDBにキャッシュ
       if (typeof window !== 'undefined' && 'indexedDB' in window) {
         await this.cacheToIndexedDB('index', this.index);
       }
       
+      // this.indexがnullでないことを保証
+      if (!this.index) {
+        throw new Error('Failed to parse index data');
+      }
+      
       return this.index;
     } catch (error) {
       console.error('Failed to load index:', error);
       // オフラインフォールバック
-      return this.loadFromIndexedDB('index') || this.getDefaultIndex();
+      const fallbackData = await this.loadFromIndexedDB('index');
+      
+      if (fallbackData) {
+        this.index = fallbackData as MasterIndex;
+        return this.index;
+      }
+      
+      // デフォルトインデックスを返す
+      const defaultIndex = this.getDefaultIndex();
+      this.index = defaultIndex;
+      return defaultIndex;
     }
   }
 
@@ -44,10 +60,19 @@ export class DataLoader {
     }
 
     // ネットワークから取得
-    if (!this.index) await this.initialize();
+    if (!this.index) {
+      await this.initialize();
+    }
     
-    const category = this.index?.categories.find(c => c.id === categoryId);
-    if (!category) throw new Error(`Category ${categoryId} not found`);
+    // この時点でthis.indexは必ず存在する
+    if (!this.index) {
+      throw new Error('Index initialization failed');
+    }
+
+    const category = this.index.categories.find(c => c.id === categoryId);
+    if (!category) {
+      throw new Error(`Category ${categoryId} not found`);
+    }
 
     try {
       const response = await fetch(category.file);
@@ -69,12 +94,12 @@ export class DataLoader {
     const cacheKey = `tool_${toolId}`;
     
     if (this.cache.has(cacheKey)) {
-      return this.cache.get(cacheKey);
+      return this.cache.get(cacheKey) as CompetitorAnalysis;
     }
 
     try {
       const response = await fetch(`/data/tools/${toolId}.json`);
-      const data = await response.json();
+      const data: CompetitorAnalysis = await response.json();
       
       // 免責事項を確実に追加（理念準拠）
       data.disclaimer = data.disclaimer || 
@@ -93,14 +118,16 @@ export class DataLoader {
     // キャッシュサイズ制限
     if (this.cache.size >= this.MAX_CACHE_SIZE) {
       const firstKey = this.cache.keys().next().value;
-      this.cache.delete(firstKey);
+      if (firstKey) {
+        this.cache.delete(firstKey);
+      }
     }
     this.cache.set(key, data);
   }
 
   // キャッシュ鮮度チェック
   private isFresh(data: any, maxAge = 7 * 24 * 60 * 60 * 1000): boolean {
-    if (!data.lastUpdated) return false;
+    if (!data?.lastUpdated) return false;
     const lastUpdated = new Date(data.lastUpdated);
     return Date.now() - lastUpdated.getTime() < maxAge;
   }
@@ -113,7 +140,15 @@ export class DataLoader {
       const db = await this.openDB();
       const tx = db.transaction(['cache'], 'readwrite');
       const store = tx.objectStore('cache');
-      await store.put({ key, data, timestamp: Date.now() });
+      const request = store.put({ key, data, timestamp: Date.now() });
+      
+      // Promise化
+      await new Promise<void>((resolve, reject) => {
+        request.onsuccess = () => resolve();
+        request.onerror = () => reject(request.error);
+      });
+      
+      tx.oncomplete = () => db.close();
     } catch (error) {
       console.error('IndexedDB cache error:', error);
     }
@@ -126,7 +161,15 @@ export class DataLoader {
       const db = await this.openDB();
       const tx = db.transaction(['cache'], 'readonly');
       const store = tx.objectStore('cache');
-      const result = await store.get(key);
+      const request = store.get(key);
+      
+      // Promise化
+      const result = await new Promise<any>((resolve, reject) => {
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+      });
+      
+      tx.oncomplete = () => db.close();
       return result?.data || null;
     } catch (error) {
       console.error('IndexedDB load error:', error);
@@ -165,13 +208,21 @@ export class DataLoader {
     const popularIds = ['canva', 'notion', 'figma', 'chatgpt', 'github'];
     
     // バックグラウンドでロード
-    if ('requestIdleCallback' in window) {
+    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
       window.requestIdleCallback(() => {
-        popularIds.forEach(id => this.loadToolDetail(id));
+        popularIds.forEach(id => {
+          this.loadToolDetail(id).catch(err => 
+            console.warn(`Failed to preload ${id}:`, err)
+          );
+        });
       });
     } else {
       setTimeout(() => {
-        popularIds.forEach(id => this.loadToolDetail(id));
+        popularIds.forEach(id => {
+          this.loadToolDetail(id).catch(err => 
+            console.warn(`Failed to preload ${id}:`, err)
+          );
+        });
       }, 1000);
     }
   }

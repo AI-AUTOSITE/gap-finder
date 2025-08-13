@@ -3,7 +3,7 @@ const withPWA = require('@ducanh2912/next-pwa').default({
   cacheOnFrontEndNav: true,
   aggressiveFrontEndNavCaching: true,
   reloadOnOnline: true,
-  swcMinify: true,
+  // swcMinifyをPWA設定から削除
   disable: process.env.NODE_ENV === 'development',
   workboxOptions: {
     disableDevLogs: true,
@@ -26,9 +26,21 @@ const nextConfig = {
   // パフォーマンス最適化
   compress: true,
   poweredByHeader: false,
+  // swcMinifyを削除（Next.js 15ではデフォルトで有効）
   
   // 静的ファイル最適化
   assetPrefix: process.env.NODE_ENV === 'production' ? '' : '',
+  
+  // ESLint設定
+  eslint: {
+    ignoreDuringBuilds: false,
+    dirs: ['src']
+  },
+  
+  // TypeScript設定
+  typescript: {
+    ignoreBuildErrors: false
+  },
   
   // セキュリティヘッダー
   async headers() {
@@ -47,6 +59,24 @@ const nextConfig = {
           {
             key: 'Referrer-Policy',
             value: 'origin-when-cross-origin',
+          },
+          {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block',
+          },
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=()',
+          },
+        ],
+      },
+      // Service Workerの適切なキャッシュ制御
+      {
+        source: '/sw.js',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=0, must-revalidate',
           },
         ],
       },

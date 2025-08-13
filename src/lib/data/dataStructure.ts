@@ -1,4 +1,6 @@
 // src/lib/data/dataStructure.ts
+
+// マスターインデックス
 export interface MasterIndex {
   version: string;
   lastUpdated: string;
@@ -7,61 +9,165 @@ export interface MasterIndex {
   searchIndex: string;
 }
 
+// カテゴリメタデータ
 export interface CategoryMeta {
   id: string;
   name: string;
-  emoji: string;
-  toolCount: number;
+  description: string;
   file: string;
-  popularTools: string[];
-  trending: boolean;
+  toolCount: number;
+  iconClass?: string;
+  trending?: boolean;
 }
 
-// 建設的な分析スキーマ（v3.0準拠）
+// 競合分析データ
 export interface CompetitorAnalysis {
-  // 基本情報
   id: string;
   name: string;
   category: string;
   website: string;
-  pricing: string;
-  marketShare?: string;
+  description: string;
   
-  // 必ず強みから始める（理念準拠）
-  strengths: {
-    feature: string;
-    description: string;
-    userBenefit: string;
-  }[];
+  // マーケット情報
+  marketPosition: MarketPosition;
+  pricing: PricingTier[];
+  targetAudience: string[];
   
-  // 建設的な改善機会（批判ではない）
-  improvementOpportunities: {
-    area: string;
-    currentState: string; // 現状の説明（中立的）
-    potentialImprovement: string; // 可能性
-    userImpact: string;
-    difficulty: 'easy' | 'medium' | 'hard';
-  }[];
-  
-  // 市場の機会（ギャップではなく機会）
-  marketOpportunities: {
-    opportunity: string;
-    reasoning: string;
-    potentialValue: string;
-    implementationTips: string[];
-  }[];
-  
-  // 成功事例
-  successStories: {
-    company: string;
-    inspiration: string;
-    implementation: string;
-    result: string;
-    lessons: string[];
-  }[];
+  // 分析データ
+  strengths: AnalysisPoint[];
+  opportunities: AnalysisPoint[];
+  userFeedback: UserFeedback[];
+  alternatives: AlternativeTool[];
   
   // メタデータ
   lastUpdated: string;
   dataQuality: 'high' | 'medium' | 'basic';
-  disclaimer: string; // 常に含める
+  disclaimer?: string;
+  sources?: string[];
 }
+
+// マーケットポジション
+export interface MarketPosition {
+  marketShare?: string;
+  userBase?: string;
+  monthlyTraffic?: string;
+  ranking?: number;
+  growth?: 'rapid' | 'steady' | 'stable' | 'declining';
+}
+
+// 価格プラン
+export interface PricingTier {
+  name: string;
+  price: number | string;
+  billingCycle?: 'monthly' | 'yearly' | 'one-time';
+  features: string[];
+  limitations?: string[];
+  highlighted?: boolean;
+}
+
+// 分析ポイント
+export interface AnalysisPoint {
+  title: string;
+  description: string;
+  impact: 'high' | 'medium' | 'low';
+  category?: string;
+  evidence?: string[];
+  actionable?: boolean;
+}
+
+// ユーザーフィードバック
+export interface UserFeedback {
+  type: 'positive' | 'constructive' | 'neutral';
+  summary: string;
+  frequency: number;
+  source?: string;
+  dateRange?: string;
+}
+
+// 代替ツール
+export interface AlternativeTool {
+  id: string;
+  name: string;
+  category: string;
+  differentiator: string;
+  pricing: string;
+  userBase?: string;
+  pros?: string[];
+  cons?: string[];
+}
+
+// 検索インデックス
+export interface SearchIndex {
+  version: string;
+  entries: SearchEntry[];
+  categories: string[];
+  tags: string[];
+}
+
+// 検索エントリ
+export interface SearchEntry {
+  id: string;
+  name: string;
+  category: string;
+  keywords: string[];
+  description: string;
+  popularity: number;
+  aliases?: string[];
+}
+
+// カテゴリデータ
+export interface CategoryData {
+  id: string;
+  name: string;
+  description: string;
+  tools: ToolSummary[];
+  trends: MarketTrend[];
+  insights: CategoryInsight[];
+  lastUpdated: string;
+}
+
+// ツールサマリー
+export interface ToolSummary {
+  id: string;
+  name: string;
+  tagline: string;
+  logo?: string;
+  pricing: string;
+  rating?: number;
+  userCount?: string;
+  tags: string[];
+}
+
+// マーケットトレンド
+export interface MarketTrend {
+  title: string;
+  description: string;
+  impact: 'rising' | 'steady' | 'declining';
+  relatedTools: string[];
+  timeframe: string;
+}
+
+// カテゴリインサイト
+export interface CategoryInsight {
+  type: 'opportunity' | 'challenge' | 'trend';
+  title: string;
+  description: string;
+  relevance: number;
+  actionItems?: string[];
+}
+
+// データレスポンス型
+export interface DataResponse<T> {
+  success: boolean;
+  data?: T;
+  error?: string;
+  cached?: boolean;
+  timestamp?: string;
+}
+
+// エクスポート型
+export type {
+  MasterIndex as Index,
+  CompetitorAnalysis as Analysis,
+  CategoryData as Category
+};
