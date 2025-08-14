@@ -4,17 +4,11 @@ import { useState, useEffect } from 'react';
 import { 
   Search, 
   Target, 
-  Wifi, 
-  WifiOff, 
-  Download, 
   TrendingUp, 
   Users, 
   Lightbulb,
-  Menu,
-  X,
   ChevronDown,
   Sparkles,
-  Zap,
   Shield,
   Clock,
   Volume2,
@@ -68,9 +62,7 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<CompetitorData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isOnline, setIsOnline] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [expandedCard, setExpandedCard] = useState<string | null>(null);
   
   // 新機能の状態管理
@@ -96,21 +88,6 @@ export default function Home() {
       }
     }
     loadData();
-  }, []);
-
-  // オンライン/オフライン監視
-  useEffect(() => {
-    setIsOnline(navigator.onLine);
-    const handleOnline = () => setIsOnline(true);
-    const handleOffline = () => setIsOnline(false);
-    
-    window.addEventListener('online', handleOnline);
-    window.addEventListener('offline', handleOffline);
-    
-    return () => {
-      window.removeEventListener('online', handleOnline);
-      window.removeEventListener('offline', handleOffline);
-    };
   }, []);
 
   // 検索処理
@@ -164,127 +141,55 @@ export default function Home() {
   // 人気検索
   const popularSearches = ['Canva', 'Figma', 'Notion', 'Slack', 'Zoom', 'GitHub'];
 
+  // View切り替えを処理するイベントリスナー
+  useEffect(() => {
+    const handleViewChange = (event: CustomEvent) => {
+      if (event.detail && event.detail.view) {
+        setActiveView(event.detail.view);
+      }
+    };
+
+    window.addEventListener('change-view' as any, handleViewChange);
+    return () => {
+      window.removeEventListener('change-view' as any, handleViewChange);
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
-      {/* Header */}
-      <header className="bg-white/80 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
-                <Target className="h-5 w-5 text-white" />
-              </div>
-              <div>
-                <h1 className="text-lg sm:text-xl font-bold text-gray-900">Gap Finder</h1>
-                <p className="hidden sm:block text-xs text-gray-600">Smart Competitor Analysis</p>
-              </div>
-            </div>
-
-            {/* View Switcher */}
-            <div className="hidden md:flex items-center gap-2 bg-gray-100 rounded-lg p-1">
-              <button
-                onClick={() => setActiveView('grid')}
-                className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
-                  activeView === 'grid' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-600'
-                }`}
-              >
-                Grid View
-              </button>
-              <button
-                onClick={() => setActiveView('comparison')}
-                className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
-                  activeView === 'comparison' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-600'
-                } ${selectedTools.length > 0 ? '' : 'opacity-50 cursor-not-allowed'}`}
-                disabled={selectedTools.length === 0}
-              >
-                Compare ({selectedTools.length})
-              </button>
-              <button
-                onClick={() => setActiveView('report')}
-                className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
-                  activeView === 'report' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-600'
-                }`}
-              >
-                AI Reports
-              </button>
-            </div>
-
-            <div className="hidden md:flex items-center space-x-4">
-              {/* Text-to-Speech Control */}
-              <button
-                onClick={() => isSpeaking ? stopSpeaking() : speakText('Welcome to Gap Finder. Select a tool to analyze.')}
-                className={`p-2 rounded-lg transition-colors ${
-                  isSpeaking ? 'bg-red-100 text-red-600' : 'bg-blue-100 text-blue-600'
-                }`}
-                title={isSpeaking ? 'Stop Reading' : 'Start Reading'}
-              >
-                <Volume2 className="h-5 w-5" />
-              </button>
-
-              <div className={`flex items-center gap-2 px-3 py-1 rounded-full text-sm ${
-                isOnline ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700'
-              }`}>
-                {isOnline ? <Wifi className="h-4 w-4" /> : <WifiOff className="h-4 w-4" />}
-                <span className="hidden lg:inline">{isOnline ? 'Online' : 'Offline'}</span>
-              </div>
-              
-              <button 
-                onClick={() => setIsPro(true)}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
-              >
-                Upgrade to Pro
-              </button>
-            </div>
-
+      {/* Main Content - ヘッダー削除 */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        {/* View Switcher Tabs */}
+        <div className="flex justify-center mb-8">
+          <div className="inline-flex items-center gap-2 bg-gray-100 rounded-lg p-1">
             <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 rounded-lg hover:bg-gray-100"
+              onClick={() => setActiveView('grid')}
+              className={`px-4 py-2 rounded text-sm font-medium transition-colors ${
+                activeView === 'grid' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-600'
+              }`}
             >
-              {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              Grid View
+            </button>
+            <button
+              onClick={() => setActiveView('comparison')}
+              className={`px-4 py-2 rounded text-sm font-medium transition-colors ${
+                activeView === 'comparison' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-600'
+              } ${selectedTools.length > 0 ? '' : 'opacity-50 cursor-not-allowed'}`}
+              disabled={selectedTools.length === 0}
+            >
+              Compare ({selectedTools.length})
+            </button>
+            <button
+              onClick={() => setActiveView('report')}
+              className={`px-4 py-2 rounded text-sm font-medium transition-colors ${
+                activeView === 'report' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-600'
+              }`}
+            >
+              AI Reports
             </button>
           </div>
-
-          {isMobileMenuOpen && (
-            <div className="md:hidden py-4 border-t border-gray-200">
-              <div className="space-y-4">
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => setActiveView('grid')}
-                    className={`flex-1 px-3 py-2 rounded-lg text-sm font-medium ${
-                      activeView === 'grid' ? 'bg-blue-600 text-white' : 'bg-gray-100'
-                    }`}
-                  >
-                    Grid
-                  </button>
-                  <button
-                    onClick={() => setActiveView('comparison')}
-                    className={`flex-1 px-3 py-2 rounded-lg text-sm font-medium ${
-                      activeView === 'comparison' ? 'bg-blue-600 text-white' : 'bg-gray-100'
-                    }`}
-                  >
-                    Compare
-                  </button>
-                  <button
-                    onClick={() => setActiveView('report')}
-                    className={`flex-1 px-3 py-2 rounded-lg text-sm font-medium ${
-                      activeView === 'report' ? 'bg-blue-600 text-white' : 'bg-gray-100'
-                    }`}
-                  >
-                    Reports
-                  </button>
-                </div>
-                
-                <button className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium">
-                  Upgrade to Pro
-                </button>
-              </div>
-            </div>
-          )}
         </div>
-      </header>
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         {/* Search Section */}
         <div className="text-center mb-8 sm:mb-12">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
