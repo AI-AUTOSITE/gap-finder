@@ -1,5 +1,6 @@
 'use client';
 
+import { ToolBadges, ToolsModal, FavoriteButton, FavoritesSection } from '@/components/badges/ToolBadges';
 import { useState, useEffect } from 'react';
 import { 
   Search, 
@@ -72,6 +73,10 @@ export default function Home() {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isPro, setIsPro] = useState(false);
   const [aiUsageCount, setAiUsageCount] = useState(5);
+  const [favorites, setFavorites] = useState<string[]>([]);
+  const [showModal, setShowModal] = useState(false);
+  const [modalTools, setModalTools] = useState<CompetitorData[]>([]);
+  const [modalTitle, setModalTitle] = useState('');
 
   // データ読み込み
   useEffect(() => {
@@ -90,6 +95,17 @@ export default function Home() {
     loadData();
   }, []);
 
+  useEffect(() => {
+  const savedFavorites = localStorage.getItem('gapFinderFavorites');
+  if (savedFavorites) {
+    try {
+      setFavorites(JSON.parse(savedFavorites));
+    } catch (error) {
+      console.error('Failed to load favorites:', error);
+    }
+  }
+}, []);
+
   // 検索処理
   const handleSearch = () => {
     if (!searchQuery.trim()) {
@@ -106,7 +122,12 @@ export default function Home() {
     
     setSearchResults(filtered);
   };
-
+const handleCategoryClick = (category: string) => {
+  const tools = competitors.filter(t => t.category === category);
+  setModalTools(tools);
+  setModalTitle(`🏷 ${category} (${tools.length} tools)`);
+  setShowModal(true);
+};
   // ツール選択（比較用）
   const toggleToolSelection = (tool: CompetitorData) => {
     if (selectedTools.find(t => t.id === tool.id)) {
@@ -115,7 +136,13 @@ export default function Home() {
       setSelectedTools([...selectedTools, tool]);
     }
   };
+// 5. ツールクリック処理を追加（クイックサーチ用）:
 
+const quickSearch = (toolName: string) => {
+  setSearchQuery(toolName);
+  setTimeout(handleSearch, 100);
+  setShowModal(false);
+};
   // テキスト読み上げ
   const speakText = (text: string) => {
     if ('speechSynthesis' in window) {
@@ -135,6 +162,14 @@ export default function Home() {
     }
   };
 
+const toggleFavorite = (toolId: string) => {
+  const newFavorites = favorites.includes(toolId)
+    ? favorites.filter(id => id !== toolId)
+    : [...favorites, toolId];
+  
+  setFavorites(newFavorites);
+  localStorage.setItem('gapFinderFavorites', JSON.stringify(newFavorites));
+};
   // カテゴリ取得
   const categories = Array.from(new Set(competitors.map(c => c.category)));
 
@@ -313,22 +348,27 @@ export default function Home() {
                   <div className="grid gap-4 sm:gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                     {searchResults.map((tool) => (
                       <CompetitorCard 
-                        key={tool.id} 
-                        tool={tool}
-                        isExpanded={expandedCard === tool.id}
-                        onToggle={() => setExpandedCard(expandedCard === tool.id ? null : tool.id)}
-                        onSelect={() => toggleToolSelection(tool)}
-                        isSelected={selectedTools.some(t => t.id === tool.id)}
-                        onGenerateReport={() => {
-                          setSelectedToolForReport(tool);
-                          setActiveView('report');
-                        }}
-                        onSpeak={() => {
-                          const text = `${tool.name}. ${tool.category}. Price: ${tool.pricing}. 
-                            Top complaint: ${tool.userComplaints[0]?.issue || 'None'}. 
-                            Top opportunity: ${tool.industryGaps[0]?.gap || 'None'}.`;
-                          speakText(text);
-                        }}
+  key={tool.id} 
+  tool={tool}
+  isExpanded={expandedCard === tool.id}
+  onToggle={() => setExpandedCard(expandedCard === tool.id ? null : tool.id)}
+  onSelect={() => toggleToolSelection(tool)}
+  isSelected={selectedTools.some(t => t.id === tool.id)}
+  onGenerateReport={() => {
+    setSelectedToolForReport(tool);
+    setActiveView('report');
+  }}
+  onSpeak={() => {
+    const text = `${tool.name}. ${tool.category}. Price: ${tool.pricing}. 
+      Top complaint: ${tool.userComplaints[0]?.issue || 'None'}. 
+      Top opportunity: ${tool.industryGaps[0]?.gap || 'None'}.`;
+    speakText(text);
+  }}
+  // 以下の4行を追加
+  isFavorite={favorites.includes(tool.id)}
+  onToggleFavorite={() => toggleFavorite(tool.id)}
+  onCategoryClick={handleCategoryClick}
+  onToolClick={quickSearch}
                       />
                     ))}
                   </div>
@@ -383,6 +423,26 @@ export default function Home() {
             color="orange"
           />
         </div>
+        
+{/* お気に入りセクション */}
+<FavoritesSection
+  favorites={favorites}
+  tools={competitors}
+  onToolClick={quickSearch}
+  onClearAll={() => {
+    setFavorites([]);
+    localStorage.removeItem('gapFinderFavorites');
+  }}
+/>
+
+{/* カテゴリモーダル */}
+<ToolsModal
+  isOpen={showModal}
+  onClose={() => setShowModal(false)}
+  title={modalTitle}
+  tools={modalTools}
+  onSelectTool={quickSearch}
+/>
       </main>
     </div>
   );
@@ -426,7 +486,11 @@ function CompetitorCard({
   onSelect,
   isSelected,
   onGenerateReport,
-  onSpeak
+  onSpeak,
+  isFavorite,           // 追加
+  onToggleFavorite,     // 追加  
+  onCategoryClick,      // 追加
+  onToolClick    
 }: { 
   tool: CompetitorData;
   isExpanded: boolean;
@@ -435,6 +499,10 @@ function CompetitorCard({
   isSelected: boolean;
   onGenerateReport: () => void;
   onSpeak: () => void;
+  isFavorite: boolean;          // 追加
+  onToggleFavorite: () => void; // 追加
+  onCategoryClick: (category: string) => void;  // 追加
+  onToolClick: (toolName: string) => void;      // 追加
 }) {
   const getSeverityColor = (severity: string) => {
     switch (severity) {
@@ -445,17 +513,24 @@ function CompetitorCard({
     }
   };
 
+
   return (
     <div className={`bg-white rounded-xl shadow-lg p-4 sm:p-6 hover:shadow-xl transition-all ${
       isSelected ? 'ring-2 ring-blue-500' : ''
     }`}>
       <div className="flex justify-between items-start mb-3 sm:mb-4">
-        <div>
+        <div className="flex-1">
           <h3 className="text-lg sm:text-xl font-bold text-gray-900">{tool.name}</h3>
           <p className="text-xs sm:text-sm text-gray-600">{tool.category}</p>
           <p className="text-xs sm:text-sm text-blue-600 font-medium mt-1">{tool.pricing}</p>
         </div>
         <div className="flex items-center gap-2">
+          {/* お気に入りボタンを追加 */}
+          <FavoriteButton
+            toolId={tool.id}
+            isFavorite={isFavorite}
+            onToggle={onToggleFavorite}  // ← こう変更
+          />
           {tool.marketShare && (
             <span className="px-1.5 sm:px-2 py-0.5 sm:py-1 bg-blue-100 text-blue-700 text-xs rounded-full">
               {tool.marketShare}
@@ -472,6 +547,13 @@ function CompetitorCard({
           </button>
         </div>
       </div>
+
+      {/* バッジコンポーネントを追加 */}
+      <ToolBadges
+  tool={tool}
+  onCategoryClick={onCategoryClick}  // ← こう変更
+  onToolClick={onToolClick}          // ← こう変更
+/>
 
       <div className="mb-3 sm:mb-4">
         <h4 className="font-semibold text-xs sm:text-sm text-gray-700 mb-2">Top User Feedback</h4>
@@ -523,16 +605,20 @@ function CompetitorCard({
       </div>
 
       {isExpanded && (
-        <div className="mt-3 pt-3 border-t space-y-2">
-          <div className="flex flex-wrap gap-1">
-            {tool.similarTools.slice(0, 3).map((similar) => (
-              <span key={similar.id} className="text-xs px-2 py-1 bg-gray-100 rounded-full">
-                {similar.name}
-              </span>
-            ))}
-          </div>
-        </div>
-      )}
+  <div className="mt-3 pt-3 border-t space-y-2">
+    <div className="flex flex-wrap gap-1">
+      {tool.similarTools.slice(0, 3).map((similar) => (
+        <button
+          key={similar.id}
+          onClick={() => onToolClick(similar.name)}  // ← こう変更
+          className="text-xs px-2 py-1 bg-gray-100 hover:bg-gray-200 rounded-full transition"
+        >
+          {similar.name}
+        </button>
+      ))}
+    </div>
+  </div>
+)}
     </div>
   );
 }
