@@ -68,14 +68,22 @@ module.exports = {
         sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
       },
       animation: {
+        // 既存のアニメーション
         'fade-in': 'fadeIn 0.5s ease-in-out',
         'slide-up': 'slideUp 0.3s ease-out',
         'slide-down': 'slideDown 0.3s ease-out',
         'skeleton': 'skeleton 1.5s ease-in-out infinite',
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
         'bounce-soft': 'bounceSoft 2s infinite',
+        
+        // 新規追加アニメーション（モーダル用）
+        'scale-in': 'scaleIn 0.3s ease-out',
+        'slide-in': 'slideIn 0.3s ease-out',
+        'modal-fade': 'modalFade 0.2s ease-out',
+        'modal-scale': 'modalScale 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
       },
       keyframes: {
+        // 既存のキーフレーム
         fadeIn: {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
@@ -96,6 +104,51 @@ module.exports = {
           '0%, 100%': { transform: 'translateY(-5%)' },
           '50%': { transform: 'translateY(0)' },
         },
+        
+        // 新規追加キーフレーム（モーダル用）
+        scaleIn: {
+          '0%': { 
+            transform: 'scale(0.9)',
+            opacity: '0' 
+          },
+          '100%': { 
+            transform: 'scale(1)',
+            opacity: '1' 
+          },
+        },
+        slideIn: {
+          '0%': { 
+            transform: 'translateX(100%)',
+            opacity: '0' 
+          },
+          '100%': { 
+            transform: 'translateX(0)',
+            opacity: '1' 
+          },
+        },
+        modalFade: {
+          '0%': { 
+            opacity: '0',
+            backdropFilter: 'blur(0px)'
+          },
+          '100%': { 
+            opacity: '1',
+            backdropFilter: 'blur(8px)'
+          },
+        },
+        modalScale: {
+          '0%': { 
+            transform: 'scale(0.95) translateY(10px)',
+            opacity: '0' 
+          },
+          '50%': { 
+            transform: 'scale(1.02) translateY(-5px)',
+          },
+          '100%': { 
+            transform: 'scale(1) translateY(0)',
+            opacity: '1' 
+          },
+        },
       },
       backdropBlur: {
         xs: '2px',
@@ -107,11 +160,26 @@ module.exports = {
       screens: {
         'xs': '475px',
       },
+      // z-indexの追加（モーダル階層管理）
+      zIndex: {
+        '60': '60',
+        '70': '70',
+        '80': '80',
+        '90': '90',
+        '100': '100',
+      },
+      // ボックスシャドウの追加
+      boxShadow: {
+        'modal': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+        'header': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+        'float': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+      },
     },
   },
   plugins: [
     // カスタムプラグインで頻用するスタイルを定義
-    function({ addUtilities }) {
+    function({ addUtilities, addComponents }) {
+      // ユーティリティクラス
       addUtilities({
         '.gpu-accelerated': {
           transform: 'translateZ(0)',
@@ -119,6 +187,62 @@ module.exports = {
         },
         '.text-balance': {
           'text-wrap': 'balance',
+        },
+        '.scrollbar-hide': {
+          /* IE and Edge */
+          '-ms-overflow-style': 'none',
+          /* Firefox */
+          'scrollbar-width': 'none',
+          /* Safari and Chrome */
+          '&::-webkit-scrollbar': {
+            display: 'none',
+          },
+        },
+        '.safe-top': {
+          paddingTop: 'env(safe-area-inset-top)',
+        },
+        '.safe-bottom': {
+          paddingBottom: 'env(safe-area-inset-bottom)',
+        },
+        '.safe-left': {
+          paddingLeft: 'env(safe-area-inset-left)',
+        },
+        '.safe-right': {
+          paddingRight: 'env(safe-area-inset-right)',
+        },
+      });
+      
+      // コンポーネントクラス
+      addComponents({
+        // モーダル背景のスタイル
+        '.modal-backdrop': {
+          position: 'fixed',
+          inset: '0',
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          backdropFilter: 'blur(4px)',
+          zIndex: '50',
+        },
+        // ヘッダーの固定スタイル
+        '.header-sticky': {
+          position: 'fixed',
+          top: '0',
+          left: '0',
+          right: '0',
+          zIndex: '50',
+          backdropFilter: 'blur(12px)',
+          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+        },
+        // フローティングボタンスタイル
+        '.floating-button': {
+          position: 'fixed',
+          padding: '0.75rem',
+          borderRadius: '9999px',
+          boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+          transition: 'all 0.3s ease',
+          '&:hover': {
+            transform: 'scale(1.1)',
+            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
+          },
         },
       });
     },

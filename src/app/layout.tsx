@@ -6,10 +6,9 @@ import { Inter } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/react';
 import { QuickActions } from '@/components/ui/QuickActions';
 import { KeyboardShortcuts } from '@/components/ui/KeyboardShortcuts';
+import Header from '@/components/layout/Header';
+import NPSSurvey from '@/components/feedback/NPSSurvey';
 import './globals.css';
-import ShareButton from '@/components/ui/ShareButton'
-import FeedbackWidget from '@/components/feedback/FeedbackWidget'
-import NPSSurvey from '@/components/feedback/NPSSurvey'
 
 // フォント最適化
 const inter = Inter({ 
@@ -67,7 +66,7 @@ function OfflineIndicator() {
   if (!isOffline) return null;
 
   return (
-    <div className="fixed top-0 left-0 right-0 bg-orange-500 text-white text-center py-2 z-50 text-sm font-medium">
+    <div className="fixed top-16 left-0 right-0 bg-orange-500 text-white text-center py-2 z-40 text-sm font-medium">
       <div className="flex items-center justify-center gap-2">
         <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
         <span>You're offline - Gap Finder works without internet!</span>
@@ -160,7 +159,7 @@ function NotificationSystem() {
   if (notifications.length === 0) return null;
 
   return (
-    <div className="fixed top-4 right-4 z-50 space-y-2">
+    <div className="fixed top-20 right-4 z-50 space-y-2">
       {notifications.map(notification => (
         <div
           key={notification.id}
@@ -185,6 +184,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const [showDisclaimer, setShowDisclaimer] = useState(false);
+  const [isOnline, setIsOnline] = useState(true);
+
+  // オンライン状態の監視
+  useEffect(() => {
+    setIsOnline(navigator.onLine);
+    
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+    
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
 
   // 免責事項の表示処理
   useEffect(() => {
@@ -292,11 +308,14 @@ export default function RootLayout({
           Skip to main content
         </a>
         
+        {/* 追従型ヘッダー */}
+        <Header isOnline={isOnline} />
+        
         {/* オフラインインジケーター */}
         <OfflineIndicator />
         
         {/* メインコンテンツ */}
-        <div id="main-content" className="min-h-screen bg-gray-50">
+        <div id="main-content" className="min-h-screen bg-gray-50 pt-16">
           {children}
         </div>
         
@@ -318,21 +337,6 @@ export default function RootLayout({
         {/* 通知システム */}
         <NotificationSystem />
         
-        {/* シェアボタン */}
-        <ShareButton 
-          variant="floating"
-          position="fixed"
-          title="Gap Finder - Smart Competitor Analysis"
-          text="Found amazing market opportunities with Gap Finder!"
-          hashtags={['GapFinder', 'IndieHackers', 'MarketAnalysis']}
-        />
-        
-        {/* フィードバックウィジェット */}
-        <FeedbackWidget 
-          position="bottom-left"
-          variant="floating"
-        />
-        
         {/* NPSサーベイ（30日ごと） */}
         <NPSSurvey />
         
@@ -341,7 +345,7 @@ export default function RootLayout({
         
         {/* 免責事項ダイアログ */}
         {showDisclaimer && (
-          <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0 bg-black/50 z-[70] flex items-center justify-center p-4">
             <div className="bg-white rounded-xl p-6 max-w-md animate-scale-in">
               <h2 className="text-xl font-bold mb-4">Welcome to Gap Finder</h2>
               <div className="text-sm text-gray-600 space-y-2">

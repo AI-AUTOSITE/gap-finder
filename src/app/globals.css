@@ -160,6 +160,34 @@
   .skeleton-avatar {
     @apply skeleton w-12 h-12 rounded-full;
   }
+  
+  /* 建設的な表現用のスタイル */
+  .strength-badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
+           bg-gradient-to-r from-green-50 to-emerald-50 text-green-700 
+           border border-green-200;
+  }
+  
+  .opportunity-badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
+           bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-700
+           border border-blue-200;
+  }
+  
+  .improvement-badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
+           bg-gradient-to-r from-purple-50 to-pink-50 text-purple-700
+           border border-purple-200;
+  }
+  
+  /* 免責事項スタイル */
+  .disclaimer-box {
+    @apply bg-amber-50 border border-amber-200 rounded-lg p-4 text-sm text-amber-800;
+  }
+  
+  .disclaimer-text {
+    @apply text-xs text-gray-500 italic;
+  }
 }
 
 @layer utilities {
@@ -214,6 +242,50 @@
   .gradient-success {
     background: linear-gradient(135deg, theme('colors.green.500'), theme('colors.green.600'));
   }
+  
+  /* 静的生成用 */
+  .static-content {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 500px;
+  }
+  
+  .prefetch-hover:hover {
+    cursor: pointer;
+  }
+  
+  /* リスペクトフルな色調 */
+  .respectful-positive {
+    @apply text-green-600 bg-green-50;
+  }
+  
+  .respectful-neutral {
+    @apply text-gray-600 bg-gray-50;
+  }
+  
+  .respectful-opportunity {
+    @apply text-blue-600 bg-blue-50;
+  }
+  
+  /* アニメーションクラス */
+  .animate-fade-in {
+    animation: fade-in 0.2s ease-out;
+  }
+  
+  .animate-scale-in {
+    animation: scale-in 0.3s ease-out;
+  }
+  
+  .animate-slide-down {
+    animation: slide-down 0.3s ease-out;
+  }
+  
+  .animate-slide-up {
+    animation: slide-up 0.3s ease-out;
+  }
+  
+  .animate-slide-in {
+    animation: slide-in 0.3s ease-out;
+  }
 }
 
 /* PWA表示モード対応 */
@@ -255,7 +327,7 @@
   }
 }
 
-/* アニメーション定義（skeletonアニメーション用） */
+/* アニメーション定義 */
 @keyframes skeleton {
   0% {
     background-position: 200% 0;
@@ -264,59 +336,56 @@
     background-position: -200% 0;
   }
 }
-/* src/app/globals.css に追加 */
 
-@layer components {
-  /* 建設的な表現用のスタイル */
-  .strength-badge {
-    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
-           bg-gradient-to-r from-green-50 to-emerald-50 text-green-700 
-           border border-green-200;
+@keyframes fade-in {
+  from {
+    opacity: 0;
   }
-  
-  .opportunity-badge {
-    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
-           bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-700
-           border border-blue-200;
-  }
-  
-  .improvement-badge {
-    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
-           bg-gradient-to-r from-purple-50 to-pink-50 text-purple-700
-           border border-purple-200;
-  }
-  
-  /* 免責事項スタイル */
-  .disclaimer-box {
-    @apply bg-amber-50 border border-amber-200 rounded-lg p-4 text-sm text-amber-800;
-  }
-  
-  .disclaimer-text {
-    @apply text-xs text-gray-500 italic;
+  to {
+    opacity: 1;
   }
 }
 
-/* パフォーマンス最適化 - 静的生成用 */
-@layer utilities {
-  .static-content {
-    content-visibility: auto;
-    contain-intrinsic-size: 0 500px;
+@keyframes scale-in {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
   }
-  
-  .prefetch-hover:hover {
-    cursor: pointer;
+  to {
+    transform: scale(1);
+    opacity: 1;
   }
-  
-  /* リスペクトフルな色調 */
-  .respectful-positive {
-    @apply text-green-600 bg-green-50;
+}
+
+@keyframes slide-down {
+  from {
+    transform: translateY(-10px);
+    opacity: 0;
   }
-  
-  .respectful-neutral {
-    @apply text-gray-600 bg-gray-50;
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
-  
-  .respectful-opportunity {
-    @apply text-blue-600 bg-blue-50;
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
   }
 }
