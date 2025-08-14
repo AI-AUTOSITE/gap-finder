@@ -1,3 +1,6 @@
+// src/app/page.tsx の更新版
+// 初期表示を空にして、gap2.htmlのようなクリーンなデザインに
+
 'use client';
 
 import { ToolBadges, ToolsModal, FavoriteButton, FavoritesSection } from '@/components/badges/ToolBadges';
@@ -15,10 +18,15 @@ import {
   Volume2,
   BarChart3,
   FileText,
-  Check
+  Check,
+  Star,
+  ArrowRight,
+  Zap,
+  Globe,
+  Rocket
 } from 'lucide-react';
 
-// 型定義
+// 型定義（既存のまま）
 interface CompetitorData {
   id: string;
   name: string;
@@ -62,7 +70,8 @@ export default function Home() {
   const [competitors, setCompetitors] = useState<CompetitorData[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<CompetitorData[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false); // 初期ローディングを false に
+  const [hasSearched, setHasSearched] = useState(false); // 検索実行フラグ追加
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [expandedCard, setExpandedCard] = useState<string | null>(null);
   
@@ -78,56 +87,66 @@ export default function Home() {
   const [modalTools, setModalTools] = useState<CompetitorData[]>([]);
   const [modalTitle, setModalTitle] = useState('');
 
-  // データ読み込み
+  // データ読み込み（初期表示なし）
   useEffect(() => {
     async function loadData() {
       try {
         const response = await fetch('/data/competitors.json');
         const data = await response.json();
         setCompetitors(data.tools || []);
-        setSearchResults(data.tools?.slice(0, 6) || []);
+        // 初期表示を空にする
+        setSearchResults([]);
       } catch (error) {
         console.error('Failed to load competitors:', error);
-      } finally {
-        setIsLoading(false);
       }
     }
     loadData();
   }, []);
 
   useEffect(() => {
-  const savedFavorites = localStorage.getItem('gapFinderFavorites');
-  if (savedFavorites) {
-    try {
-      setFavorites(JSON.parse(savedFavorites));
-    } catch (error) {
-      console.error('Failed to load favorites:', error);
+    const savedFavorites = localStorage.getItem('gapFinderFavorites');
+    if (savedFavorites) {
+      try {
+        setFavorites(JSON.parse(savedFavorites));
+      } catch (error) {
+        console.error('Failed to load favorites:', error);
+      }
     }
-  }
-}, []);
+  }, []);
 
   // 検索処理
   const handleSearch = () => {
     if (!searchQuery.trim()) {
-      setSearchResults(competitors.slice(0, 6));
+      // 空の検索の場合は何も表示しない
+      setSearchResults([]);
+      setHasSearched(false);
       return;
     }
 
-    const query = searchQuery.toLowerCase();
-    const filtered = competitors.filter(tool => 
-      tool.name.toLowerCase().includes(query) ||
-      tool.category.toLowerCase().includes(query) ||
-      tool.keywords.some(k => k.toLowerCase().includes(query))
-    );
+    setIsLoading(true);
+    setHasSearched(true);
     
-    setSearchResults(filtered);
+    // シミュレート遅延（実際のAPIコールのように）
+    setTimeout(() => {
+      const query = searchQuery.toLowerCase();
+      const filtered = competitors.filter(tool => 
+        tool.name.toLowerCase().includes(query) ||
+        tool.category.toLowerCase().includes(query) ||
+        tool.keywords.some(k => k.toLowerCase().includes(query))
+      );
+      
+      setSearchResults(filtered);
+      setIsLoading(false);
+    }, 500);
   };
-const handleCategoryClick = (category: string) => {
-  const tools = competitors.filter(t => t.category === category);
-  setModalTools(tools);
-  setModalTitle(`🏷 ${category} (${tools.length} tools)`);
-  setShowModal(true);
-};
+
+  const handleCategoryClick = (category: string) => {
+    const tools = competitors.filter(t => t.category === category);
+    setModalTools(tools);
+    setModalTitle(`🏷 ${category} (${tools.length} tools)`);
+    setShowModal(true);
+  };
+
   // ツール選択（比較用）
   const toggleToolSelection = (tool: CompetitorData) => {
     if (selectedTools.find(t => t.id === tool.id)) {
@@ -136,13 +155,14 @@ const handleCategoryClick = (category: string) => {
       setSelectedTools([...selectedTools, tool]);
     }
   };
-// 5. ツールクリック処理を追加（クイックサーチ用）:
 
-const quickSearch = (toolName: string) => {
-  setSearchQuery(toolName);
-  setTimeout(handleSearch, 100);
-  setShowModal(false);
-};
+  const quickSearch = (toolName: string) => {
+    setSearchQuery(toolName);
+    setHasSearched(true);
+    setTimeout(handleSearch, 100);
+    setShowModal(false);
+  };
+
   // テキスト読み上げ
   const speakText = (text: string) => {
     if ('speechSynthesis' in window) {
@@ -155,224 +175,269 @@ const quickSearch = (toolName: string) => {
     }
   };
 
-  const stopSpeaking = () => {
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      setIsSpeaking(false);
-    }
+  const toggleFavorite = (toolId: string) => {
+    const newFavorites = favorites.includes(toolId)
+      ? favorites.filter(id => id !== toolId)
+      : [...favorites, toolId];
+    
+    setFavorites(newFavorites);
+    localStorage.setItem('gapFinderFavorites', JSON.stringify(newFavorites));
   };
 
-const toggleFavorite = (toolId: string) => {
-  const newFavorites = favorites.includes(toolId)
-    ? favorites.filter(id => id !== toolId)
-    : [...favorites, toolId];
-  
-  setFavorites(newFavorites);
-  localStorage.setItem('gapFinderFavorites', JSON.stringify(newFavorites));
-};
   // カテゴリ取得
   const categories = Array.from(new Set(competitors.map(c => c.category)));
 
-  // 人気検索
-  const popularSearches = ['Canva', 'Figma', 'Notion', 'Slack', 'Zoom', 'GitHub'];
-
-  // View切り替えを処理するイベントリスナー
-  useEffect(() => {
-    const handleViewChange = (event: CustomEvent) => {
-      if (event.detail && event.detail.view) {
-        setActiveView(event.detail.view);
-      }
-    };
-
-    window.addEventListener('change-view' as any, handleViewChange);
-    return () => {
-      window.removeEventListener('change-view' as any, handleViewChange);
-    };
-  }, []);
+  // 人気検索（アイコン付き）
+  const popularSearches = [
+    { name: 'Canva', icon: '🎨', className: 'bg-purple-100 text-purple-700 hover:bg-purple-200' },
+    { name: 'Notion', icon: '📝', className: 'bg-green-100 text-green-700 hover:bg-green-200' },
+    { name: 'Linear', icon: '📊', className: 'bg-blue-100 text-blue-700 hover:bg-blue-200' },
+    { name: 'Figma', icon: '🖌️', className: 'bg-orange-100 text-orange-700 hover:bg-orange-200' }
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
-      {/* Main Content - ヘッダー削除 */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-        {/* View Switcher Tabs */}
-        <div className="flex justify-center mb-8">
-          <div className="inline-flex items-center gap-2 bg-gray-100 rounded-lg p-1">
-            <button
-              onClick={() => setActiveView('grid')}
-              className={`px-4 py-2 rounded text-sm font-medium transition-colors ${
-                activeView === 'grid' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-600'
-              }`}
-            >
-              Grid View
-            </button>
-            <button
-              onClick={() => setActiveView('comparison')}
-              className={`px-4 py-2 rounded text-sm font-medium transition-colors ${
-                activeView === 'comparison' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-600'
-              } ${selectedTools.length > 0 ? '' : 'opacity-50 cursor-not-allowed'}`}
-              disabled={selectedTools.length === 0}
-            >
-              Compare ({selectedTools.length})
-            </button>
-            <button
-              onClick={() => setActiveView('report')}
-              className={`px-4 py-2 rounded text-sm font-medium transition-colors ${
-                activeView === 'report' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-600'
-              }`}
-            >
-              AI Reports
-            </button>
-          </div>
-        </div>
-
-        {/* Search Section */}
-        <div className="text-center mb-8 sm:mb-12">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
-            Find Your Competitive Edge
-          </h2>
-          <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-8 max-w-3xl mx-auto px-4">
-            Discover market gaps by analyzing competitors + similar tools. 
-            <span className="block sm:inline"> Get actionable insights powered by AI. Works offline.</span>
-          </p>
+      {/* ヘッダー（グラデーション） */}
+      <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white py-16">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <h1 className="text-5xl font-bold mb-4">🔍 Gap Finder</h1>
+          <p className="text-2xl opacity-90">Discover market gaps in seconds</p>
+          <p className="text-lg mt-2 opacity-75">Analyze any tool instantly</p>
           
-          <div className="max-w-2xl mx-auto px-4 sm:px-0">
-            <div className="relative">
-              <Search className="absolute left-3 sm:left-4 top-3.5 sm:top-4 h-5 sm:h-6 w-5 sm:w-6 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search tools or categories..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-                className="w-full pl-10 sm:pl-12 pr-24 sm:pr-32 py-3 sm:py-4 text-base sm:text-lg 
-                         border border-gray-300 rounded-xl sm:rounded-2xl 
-                         focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-lg"
-              />
-              <button
-                onClick={handleSearch}
-                className="absolute right-2 top-2 px-4 sm:px-6 py-2 sm:py-3 
-                         bg-blue-600 text-white rounded-lg sm:rounded-xl 
-                         text-sm sm:text-base font-medium hover:bg-blue-700 transition-colors"
-              >
-                <span className="hidden sm:inline">Find Gaps</span>
-                <span className="sm:hidden">Search</span>
-              </button>
-            </div>
-
-            <div className="mt-4 flex flex-wrap justify-center gap-2">
-              <span className="text-xs sm:text-sm text-gray-500">Popular:</span>
-              {popularSearches.map((term) => (
-                <button
-                  key={term}
-                  onClick={() => {
-                    setSearchQuery(term);
-                    setTimeout(handleSearch, 100);
-                  }}
-                  className="px-2 sm:px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 
-                           rounded-full text-xs sm:text-sm transition-colors"
-                >
-                  {term}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Category Filter */}
-        <div className="mb-6 sm:mb-8">
-          <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">
-            Browse by Category
-          </h3>
-          <div className="flex flex-wrap gap-2">
-            <button
-              onClick={() => {
-                setSelectedCategory(null);
-                setSearchResults(competitors.slice(0, 6));
-              }}
-              className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors ${
-                !selectedCategory 
-                  ? 'bg-blue-600 text-white' 
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+          {/* ユーザーステータス切り替え */}
+          <div className="mt-6">
+            <button 
+              onClick={() => setIsPro(!isPro)}
+              className={`px-6 py-3 rounded-full transition ${
+                isPro 
+                  ? 'bg-yellow-400/30 hover:bg-yellow-400/40' 
+                  : 'bg-white/20 hover:bg-white/30'
               }`}
             >
-              All Tools
+              🔄 Click to switch: <span className="font-bold">{isPro ? 'Pro Member (AI Analysis Enabled)' : 'Free User (Basic Analysis)'}</span>
             </button>
-            {categories.slice(0, 5).map((category) => (
+          </div>
+        </div>
+      </div>
+
+      {/* 検索セクション（上に移動） */}
+      <div className="max-w-4xl mx-auto px-4 -mt-10">
+        <div className="bg-white rounded-2xl shadow-2xl p-8">
+          <div className="flex gap-4">
+            <input 
+              type="text" 
+              placeholder="🔎 Enter tool name (e.g., 'Canva', 'Notion', 'Linear')"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+              className="flex-1 px-6 py-4 text-lg border-2 border-gray-200 rounded-xl 
+                       focus:outline-none focus:border-purple-500 transition"
+            />
+            <button 
+              onClick={handleSearch}
+              className="px-10 py-4 bg-gradient-to-r from-purple-600 to-pink-600 
+                       text-white text-lg font-semibold rounded-xl 
+                       hover:from-purple-700 hover:to-pink-700 transition shadow-lg"
+            >
+              Analyze Now
+            </button>
+          </div>
+          
+          {/* クイック例（アイコン付き） */}
+          <div className="flex flex-wrap gap-3 mt-6">
+            <span className="text-gray-600 font-medium">Popular searches:</span>
+            {popularSearches.map((item) => (
               <button
-                key={category}
-                onClick={() => {
-                  setSelectedCategory(category);
-                  setSearchResults(competitors.filter(c => c.category === category));
-                }}
-                className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors ${
-                  selectedCategory === category
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
+                key={item.name}
+                onClick={() => quickSearch(item.name)}
+                className={`px-4 py-2 rounded-full transition font-medium ${item.className}`}
               >
-                {category}
+                {item.icon} {item.name}
               </button>
             ))}
           </div>
         </div>
+      </div>
 
-        {/* Main Content Area */}
-        {isLoading ? (
-          <div className="text-center py-8">
-            <div className="animate-spin h-10 sm:h-12 w-10 sm:w-12 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4" />
-            <p className="text-gray-600">Loading competitor data...</p>
+      {/* メインコンテンツエリア */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* View切り替えタブ（検索実行後のみ表示） */}
+        {hasSearched && searchResults.length > 0 && (
+          <div className="flex justify-center mb-8">
+            <div className="inline-flex items-center gap-2 bg-gray-100 rounded-lg p-1">
+              <button
+                onClick={() => setActiveView('grid')}
+                className={`px-4 py-2 rounded text-sm font-medium transition-colors ${
+                  activeView === 'grid' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-600'
+                }`}
+              >
+                Grid View
+              </button>
+              <button
+                onClick={() => setActiveView('comparison')}
+                className={`px-4 py-2 rounded text-sm font-medium transition-colors ${
+                  activeView === 'comparison' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-600'
+                } ${selectedTools.length > 0 ? '' : 'opacity-50 cursor-not-allowed'}`}
+                disabled={selectedTools.length === 0}
+              >
+                Compare ({selectedTools.length})
+              </button>
+              <button
+                onClick={() => setActiveView('report')}
+                className={`px-4 py-2 rounded text-sm font-medium transition-colors ${
+                  activeView === 'report' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-600'
+                }`}
+              >
+                AI Reports
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* 結果セクション */}
+        {!hasSearched ? (
+          // 初期状態（検索前）
+          <div className="text-center py-16">
+            <div className="max-w-2xl mx-auto">
+              <Rocket className="h-20 w-20 text-purple-400 mx-auto mb-6" />
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                Start Finding Market Gaps
+              </h2>
+              <p className="text-lg text-gray-600 mb-8">
+                Search any tool to discover user complaints, market opportunities, 
+                and competitive advantages. Our AI analyzes real user feedback to find 
+                gaps you can exploit.
+              </p>
+              
+              {/* Feature highlights */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div className="bg-white rounded-xl p-6 shadow-lg">
+                  <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                    <Users className="h-6 w-6 text-purple-600" />
+                  </div>
+                  <h3 className="font-semibold mb-2">Real User Complaints</h3>
+                  <p className="text-sm text-gray-600">
+                    Aggregated from Reddit, Twitter, and review sites
+                  </p>
+                </div>
+                <div className="bg-white rounded-xl p-6 shadow-lg">
+                  <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                    <Lightbulb className="h-6 w-6 text-green-600" />
+                  </div>
+                  <h3 className="font-semibold mb-2">AI-Powered Insights</h3>
+                  <p className="text-sm text-gray-600">
+                    Claude analyzes patterns across 100+ competitors
+                  </p>
+                </div>
+                <div className="bg-white rounded-xl p-6 shadow-lg">
+                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                    <TrendingUp className="h-6 w-6 text-blue-600" />
+                  </div>
+                  <h3 className="font-semibold mb-2">Revenue Estimates</h3>
+                  <p className="text-sm text-gray-600">
+                    Realistic ARR projections for each opportunity
+                  </p>
+                </div>
+              </div>
+              
+              {/* Call to action */}
+              <div className="flex flex-wrap justify-center gap-3">
+                <span className="text-gray-500">Try searching for:</span>
+                {['Slack', 'GitHub', 'Zoom', 'Stripe'].map(example => (
+                  <button
+                    key={example}
+                    onClick={() => quickSearch(example)}
+                    className="px-4 py-2 bg-gray-100 text-gray-700 rounded-full 
+                             hover:bg-purple-100 hover:text-purple-700 transition font-medium"
+                  >
+                    {example}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        ) : isLoading ? (
+          // ローディング状態
+          <div className="text-center py-12">
+            <div className="bg-white rounded-2xl shadow-xl p-12 inline-block">
+              <div className="animate-spin h-12 w-12 border-4 border-purple-500 
+                            border-t-transparent rounded-full mx-auto mb-4" />
+              <h3 className="text-2xl font-bold mb-2">🤖 Analyzing "{searchQuery}"...</h3>
+              <p className="text-gray-600">Searching through our database</p>
+            </div>
+          </div>
+        ) : searchResults.length === 0 ? (
+          // 検索結果なし
+          <div className="text-center py-12">
+            <div className="bg-white rounded-2xl shadow-xl p-12">
+              <Target className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+              <h3 className="text-2xl font-bold mb-4">
+                📊 "{searchQuery}" - Pro Analysis Available
+              </h3>
+              <p className="text-lg text-gray-600 mb-6">
+                This tool isn't in our free database yet, but Pro members can get instant AI analysis.
+              </p>
+              <div className="bg-gray-50 rounded-xl p-6 mb-6 max-w-md mx-auto">
+                <h4 className="font-bold mb-3">What Pro Members Get:</h4>
+                <ul className="text-left space-y-2">
+                  <li>✅ Real-time AI analysis of any tool</li>
+                  <li>✅ Common gaps across similar tools</li>
+                  <li>✅ Rare features identification</li>
+                  <li>✅ "What to build" recommendations</li>
+                  <li>✅ Competitive comparisons</li>
+                  <li>✅ Market opportunity identification</li>
+                  <li>✅ Detailed execution blueprints</li>
+                </ul>
+              </div>
+              <button 
+                onClick={() => setIsPro(true)}
+                className="px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-600 
+                         text-white rounded-xl font-semibold 
+                         hover:from-purple-700 hover:to-pink-700 transition"
+              >
+                Try Pro Mode (Demo)
+              </button>
+            </div>
           </div>
         ) : (
+          // 検索結果表示
           <>
             {activeView === 'grid' && (
               <div>
-                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">
-                  {selectedCategory ? `${selectedCategory} Tools` : 
-                   searchQuery ? `Results for "${searchQuery}"` : 'Popular Tools'}
-                  <span className="text-xs sm:text-sm font-normal text-gray-600 ml-2">
-                    ({searchResults.length} tools)
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">
+                  {searchQuery ? `Results for "${searchQuery}"` : 'Search Results'}
+                  <span className="text-sm font-normal text-gray-600 ml-2">
+                    ({searchResults.length} tools found)
                   </span>
                 </h3>
 
-                {searchResults.length === 0 ? (
-                  <div className="text-center py-12 sm:py-16 bg-white rounded-xl">
-                    <Target className="h-12 sm:h-16 w-12 sm:w-16 text-gray-300 mx-auto mb-4" />
-                    <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
-                      No tools found
-                    </h3>
-                    <p className="text-sm sm:text-base text-gray-600">
-                      Try searching for something else or browse by category
-                    </p>
-                  </div>
-                ) : (
-                  <div className="grid gap-4 sm:gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-                    {searchResults.map((tool) => (
-                      <CompetitorCard 
-  key={tool.id} 
-  tool={tool}
-  isExpanded={expandedCard === tool.id}
-  onToggle={() => setExpandedCard(expandedCard === tool.id ? null : tool.id)}
-  onSelect={() => toggleToolSelection(tool)}
-  isSelected={selectedTools.some(t => t.id === tool.id)}
-  onGenerateReport={() => {
-    setSelectedToolForReport(tool);
-    setActiveView('report');
-  }}
-  onSpeak={() => {
-    const text = `${tool.name}. ${tool.category}. Price: ${tool.pricing}. 
-      Top complaint: ${tool.userComplaints[0]?.issue || 'None'}. 
-      Top opportunity: ${tool.industryGaps[0]?.gap || 'None'}.`;
-    speakText(text);
-  }}
-  // 以下の4行を追加
-  isFavorite={favorites.includes(tool.id)}
-  onToggleFavorite={() => toggleFavorite(tool.id)}
-  onCategoryClick={handleCategoryClick}
-  onToolClick={quickSearch}
-                      />
-                    ))}
-                  </div>
-                )}
+                <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                  {searchResults.map((tool) => (
+                    <CompetitorCard 
+                      key={tool.id} 
+                      tool={tool}
+                      isExpanded={expandedCard === tool.id}
+                      onToggle={() => setExpandedCard(expandedCard === tool.id ? null : tool.id)}
+                      onSelect={() => toggleToolSelection(tool)}
+                      isSelected={selectedTools.some(t => t.id === tool.id)}
+                      onGenerateReport={() => {
+                        setSelectedToolForReport(tool);
+                        setActiveView('report');
+                      }}
+                      onSpeak={() => {
+                        const text = `${tool.name}. ${tool.category}. Price: ${tool.pricing}. 
+                          Top complaint: ${tool.userComplaints[0]?.issue || 'None'}. 
+                          Top opportunity: ${tool.industryGaps[0]?.gap || 'None'}.`;
+                        speakText(text);
+                      }}
+                      isFavorite={favorites.includes(tool.id)}
+                      onToggleFavorite={() => toggleFavorite(tool.id)}
+                      onCategoryClick={handleCategoryClick}
+                      onToolClick={quickSearch}
+                      isPro={isPro}
+                    />
+                  ))}
+                </div>
               </div>
             )}
 
@@ -396,89 +461,50 @@ const toggleFavorite = (toolId: string) => {
           </>
         )}
 
-        {/* Features Preview */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mt-12 sm:mt-16">
-          <FeatureCard
-            icon={<Users className="h-5 sm:h-6 w-5 sm:w-6 text-blue-600" />}
-            title="Industry Analysis"
-            description="See 5+ similar tools at once"
-            color="blue"
+        {/* お気に入りセクション */}
+        {favorites.length > 0 && (
+          <FavoritesSection
+            favorites={favorites}
+            tools={competitors}
+            onToolClick={quickSearch}
+            onClearAll={() => {
+              setFavorites([]);
+              localStorage.removeItem('gapFinderFavorites');
+            }}
           />
-          <FeatureCard
-            icon={<Lightbulb className="h-5 sm:h-6 w-5 sm:w-6 text-green-600" />}
-            title="AI Insights"
-            description="Smart opportunity detection"
-            color="green"
-          />
-          <FeatureCard
-            icon={<TrendingUp className="h-5 sm:h-6 w-5 sm:w-6 text-purple-600" />}
-            title="Action Plans"
-            description="Step-by-step strategies"
-            color="purple"
-          />
-          <FeatureCard
-            icon={<Shield className="h-5 sm:h-6 w-5 sm:w-6 text-orange-600" />}
-            title="Works Offline"
-            description="Full access without internet"
-            color="orange"
-          />
-        </div>
-        
-{/* お気に入りセクション */}
-<FavoritesSection
-  favorites={favorites}
-  tools={competitors}
-  onToolClick={quickSearch}
-  onClearAll={() => {
-    setFavorites([]);
-    localStorage.removeItem('gapFinderFavorites');
-  }}
-/>
+        )}
 
-{/* カテゴリモーダル */}
-<ToolsModal
-  isOpen={showModal}
-  onClose={() => setShowModal(false)}
-  title={modalTitle}
-  tools={modalTools}
-  onSelectTool={quickSearch}
-/>
+        {/* カテゴリモーダル */}
+        <ToolsModal
+          isOpen={showModal}
+          onClose={() => setShowModal(false)}
+          title={modalTitle}
+          tools={modalTools}
+          onSelectTool={quickSearch}
+        />
       </main>
     </div>
   );
 }
 
-// Feature Card Component
-function FeatureCard({ 
-  icon, 
-  title, 
-  description, 
-  color 
-}: { 
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-  color: string;
-}) {
-  const colorClasses = {
-    blue: 'bg-blue-100',
-    green: 'bg-green-100',
-    purple: 'bg-purple-100',
-    orange: 'bg-orange-100'
-  };
+// 以下、CompetitorCard、VisualComparisonMatrix、AIReportGeneratorは既存のものをそのまま使用
+// ただし、CompetitorCardにisPro propを追加して、Pro機能の表示を制御
 
-  return (
-    <div className="bg-white rounded-xl p-4 sm:p-6 text-center shadow-lg hover:shadow-xl transition-shadow">
-      <div className={`w-10 sm:w-12 h-10 sm:h-12 ${colorClasses[color as keyof typeof colorClasses]} rounded-lg flex items-center justify-center mx-auto mb-3 sm:mb-4`}>
-        {icon}
-      </div>
-      <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-1 sm:mb-2">{title}</h3>
-      <p className="text-xs sm:text-sm text-gray-600">{description}</p>
-    </div>
-  );
+interface CompetitorCardProps {
+  tool: CompetitorData;
+  isExpanded: boolean;
+  onToggle: () => void;
+  onSelect: () => void;
+  isSelected: boolean;
+  onGenerateReport: () => void;
+  onSpeak: () => void;
+  isFavorite: boolean;
+  onToggleFavorite: () => void;
+  onCategoryClick: (category: string) => void;
+  onToolClick: (toolName: string) => void;
+  isPro: boolean; // 追加
 }
 
-// Enhanced Competitor Card Component
 function CompetitorCard({ 
   tool,
   isExpanded,
@@ -487,23 +513,12 @@ function CompetitorCard({
   isSelected,
   onGenerateReport,
   onSpeak,
-  isFavorite,           // 追加
-  onToggleFavorite,     // 追加  
-  onCategoryClick,      // 追加
-  onToolClick    
-}: { 
-  tool: CompetitorData;
-  isExpanded: boolean;
-  onToggle: () => void;
-  onSelect: () => void;
-  isSelected: boolean;
-  onGenerateReport: () => void;
-  onSpeak: () => void;
-  isFavorite: boolean;          // 追加
-  onToggleFavorite: () => void; // 追加
-  onCategoryClick: (category: string) => void;  // 追加
-  onToolClick: (toolName: string) => void;      // 追加
-}) {
+  isFavorite,
+  onToggleFavorite,
+  onCategoryClick,
+  onToolClick,
+  isPro
+}: CompetitorCardProps) {
   const getSeverityColor = (severity: string) => {
     switch (severity) {
       case 'high': return 'bg-red-50 text-red-700';
@@ -513,26 +528,24 @@ function CompetitorCard({
     }
   };
 
-
   return (
-    <div className={`bg-white rounded-xl shadow-lg p-4 sm:p-6 hover:shadow-xl transition-all ${
+    <div className={`bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-all ${
       isSelected ? 'ring-2 ring-blue-500' : ''
     }`}>
-      <div className="flex justify-between items-start mb-3 sm:mb-4">
+      <div className="flex justify-between items-start mb-4">
         <div className="flex-1">
-          <h3 className="text-lg sm:text-xl font-bold text-gray-900">{tool.name}</h3>
-          <p className="text-xs sm:text-sm text-gray-600">{tool.category}</p>
-          <p className="text-xs sm:text-sm text-blue-600 font-medium mt-1">{tool.pricing}</p>
+          <h3 className="text-xl font-bold text-gray-900">{tool.name}</h3>
+          <p className="text-sm text-gray-600">{tool.category}</p>
+          <p className="text-sm text-blue-600 font-medium mt-1">{tool.pricing}</p>
         </div>
         <div className="flex items-center gap-2">
-          {/* お気に入りボタンを追加 */}
           <FavoriteButton
             toolId={tool.id}
             isFavorite={isFavorite}
-            onToggle={onToggleFavorite}  // ← こう変更
+            onToggle={onToggleFavorite}
           />
           {tool.marketShare && (
-            <span className="px-1.5 sm:px-2 py-0.5 sm:py-1 bg-blue-100 text-blue-700 text-xs rounded-full">
+            <span className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full">
               {tool.marketShare}
             </span>
           )}
@@ -548,19 +561,18 @@ function CompetitorCard({
         </div>
       </div>
 
-      {/* バッジコンポーネントを追加 */}
       <ToolBadges
-  tool={tool}
-  onCategoryClick={onCategoryClick}  // ← こう変更
-  onToolClick={onToolClick}          // ← こう変更
-/>
+        tool={tool}
+        onCategoryClick={onCategoryClick}
+        onToolClick={onToolClick}
+      />
 
-      <div className="mb-3 sm:mb-4">
-        <h4 className="font-semibold text-xs sm:text-sm text-gray-700 mb-2">Top User Feedback</h4>
+      <div className="mb-4">
+        <h4 className="font-semibold text-sm text-gray-700 mb-2">Top User Feedback</h4>
         <div className="space-y-1">
           {tool.userComplaints.slice(0, isExpanded ? 3 : 2).map((complaint, i) => (
             <div key={i} className="flex items-start gap-2">
-              <span className={`text-xs px-1.5 sm:px-2 py-0.5 rounded-full ${getSeverityColor(complaint.severity)}`}>
+              <span className={`text-xs px-2 py-0.5 rounded-full ${getSeverityColor(complaint.severity)}`}>
                 {complaint.frequency}%
               </span>
               <p className="text-xs text-gray-600 flex-1 line-clamp-2">{complaint.issue}</p>
@@ -570,9 +582,22 @@ function CompetitorCard({
       </div>
 
       {tool.industryGaps.length > 0 && (
-        <div className="p-2 sm:p-3 bg-green-50 rounded-lg mb-3">
-          <p className="text-xs sm:text-sm font-semibold text-green-700">
+        <div className="p-3 bg-green-50 rounded-lg mb-3">
+          <p className="text-sm font-semibold text-green-700">
             💡 Opportunity: {tool.industryGaps[0].gap}
+          </p>
+        </div>
+      )}
+
+      {/* Pro限定：AI Insights */}
+      {isPro && (
+        <div className="p-3 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg mb-3">
+          <p className="text-xs font-semibold text-purple-700 mb-1">
+            🤖 AI Insight (Pro)
+          </p>
+          <p className="text-xs text-gray-600">
+            87% of tools in this category lack offline support. 
+            Building this feature could capture {tool.industryGaps[0]?.successProbability || 65}% of frustrated users.
           </p>
         </div>
       )}
@@ -580,10 +605,10 @@ function CompetitorCard({
       <div className="flex items-center justify-between">
         <button
           onClick={onToggle}
-          className="flex items-center gap-1 text-xs sm:text-sm text-blue-600 hover:text-blue-700 font-medium"
+          className="flex items-center gap-1 text-sm text-blue-600 hover:text-blue-700 font-medium"
         >
           {isExpanded ? 'Show less' : 'View details'}
-          <ChevronDown className={`h-3 sm:h-4 w-3 sm:w-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+          <ChevronDown className={`h-4 w-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
         </button>
         
         <div className="flex items-center gap-2">
@@ -605,25 +630,25 @@ function CompetitorCard({
       </div>
 
       {isExpanded && (
-  <div className="mt-3 pt-3 border-t space-y-2">
-    <div className="flex flex-wrap gap-1">
-      {tool.similarTools.slice(0, 3).map((similar) => (
-        <button
-          key={similar.id}
-          onClick={() => onToolClick(similar.name)}  // ← こう変更
-          className="text-xs px-2 py-1 bg-gray-100 hover:bg-gray-200 rounded-full transition"
-        >
-          {similar.name}
-        </button>
-      ))}
-    </div>
-  </div>
-)}
+        <div className="mt-3 pt-3 border-t space-y-2">
+          <div className="flex flex-wrap gap-1">
+            {tool.similarTools.slice(0, 3).map((similar) => (
+              <button
+                key={similar.id}
+                onClick={() => onToolClick(similar.name)}
+                className="text-xs px-2 py-1 bg-gray-100 hover:bg-gray-200 rounded-full transition"
+              >
+                {similar.name}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
-// Visual Comparison Matrix Component (Simplified)
+// Visual Comparison Matrix Component
 function VisualComparisonMatrix({ 
   tools, 
   onRemoveTool,
@@ -728,7 +753,7 @@ function VisualComparisonMatrix({
   );
 }
 
-// AI Report Generator Component (Simplified)
+// AI Report Generator Component
 function AIReportGenerator({ 
   tool,
   isPro,

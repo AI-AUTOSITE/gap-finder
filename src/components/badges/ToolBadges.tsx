@@ -146,11 +146,11 @@ export function ToolsModal({
 
   return (
     <div 
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 animate-fadeIn"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 animate-modal-fade"
       onClick={onClose}
     >
       <div 
-        className="bg-white rounded-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden animate-slideUp"
+        className="bg-white rounded-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden animate-modal-scale"
         onClick={(e) => e.stopPropagation()}
       >
         {/* ヘッダー */}
@@ -214,7 +214,7 @@ export function ToolsModal({
 // お気に入りボタンコンポーネント
 // ============================================
 interface FavoriteButtonProps {
-  toolId: string;
+  toolId: string;  // 型を明示的に指定
   isFavorite: boolean;
   onToggle: () => void;
 }
@@ -292,27 +292,5 @@ export function FavoritesSection({
   );
 }
 
-// CSSアニメーション用のスタイル（Tailwindの設定に追加が必要）
-// tailwind.config.jsに以下を追加：
-/*
-module.exports = {
-  theme: {
-    extend: {
-      animation: {
-        fadeIn: 'fadeIn 0.3s ease-in-out',
-        slideUp: 'slideUp 0.3s ease-out',
-      },
-      keyframes: {
-        fadeIn: {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
-        },
-        slideUp: {
-          '0%': { transform: 'translateY(20px)', opacity: '0' },
-          '100%': { transform: 'translateY(0)', opacity: '1' },
-        },
-      },
-    },
-  },
-}
-*/
+// CSSアニメーション用のスタイル（Tailwindの設定に追加済み）
+// tailwind.config.jsにmodal-fade, modal-scaleアニメーションが定義済み
